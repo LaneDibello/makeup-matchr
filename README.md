@@ -10,7 +10,7 @@ conda activate matchr
 
 ## Import Environment
 ```
-conda deactiavte
+conda deactivate
 ```
 ```
 conda env remove -n matchr
