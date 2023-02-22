@@ -22,17 +22,14 @@ conda env create -n matchr -f environment.yml
 conda activate matchr
 ```
 
-## Export Environment
-**Windows:**
+## Add a Package
 
+If you need to add a package to the environment run:
 ```
-conda env export --no-builds | findstr -v "prefix" > environment.yml
+conda install -n matchr PACKAGE_NAME
 ```
 
-**Linux:**
-```
-conda env export --no-builds | grep -v "prefix" > environment.yml
-```
+Then open **environment.yml** and add PACKAGE_NAME alphabetically under the **dependencies** header  
 
 ## Activate Environment
 ```
