@@ -8,3 +8,4 @@ dependencies:
   - selenium
   - pip:
     - pyrebase4
+    - firebase-admin

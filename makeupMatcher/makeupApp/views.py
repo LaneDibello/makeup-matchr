@@ -1,32 +1,23 @@
 from django.shortcuts import render
-import pyrebase
+import firebase_admin
+from firebase_admin import db
 
-# Create your views here.
+# Grab crednetials from the provided private key
+cred_obj = firebase_admin.credentials.Certificate('./makeupApp/credentials.json')
 
-firebaseConfig = {
-  'apiKey': "AIzaSyCVyDzI_-Pb_y4zvOerNhN-ucHbt7IvLRc",
-  'authDomain': "makeup-matchr.firebaseapp.com",
-  'databaseURL': "https://makeup-matchr-default-rtdb.firebaseio.com",
-  'projectId': "makeup-matchr",
-  'storageBucket': "makeup-matchr.appspot.com",
-  'messagingSenderId': "1006679463606",
-  'appId': "1:1006679463606:web:245af1e8d9377edbb2f817"
-}
-
-firebase=pyrebase.initialize_app(firebaseConfig)
-authe = firebase.auth()
-database=firebase.database()
+# Connect
+firebase_admin.initialize_app(cred_obj, {
+	'databaseURL':'https://makeup-matchr-default-rtdb.firebaseio.com'
+	})
 
 def index(request):
         #accessing our firebase data and storing it in a variable
-        name = database.child('Data').child('Name').get().val()
-        stack = database.child('Data').child('Stack').get().val()
-        framework = database.child('Data').child('Framework').get().val()
+        ref = db.reference('Products')
+
+        test = ref.child('Template').get()
     
         context = {
-            'name':name,
-            'stack':stack,
-            'framework':framework
+            'URL':test['URL']
         }
         return render(request, 'index.html', context)
 
