@@ -57,56 +57,7 @@
       </div>
     </nav>
 
-    <!-- https://www.tutorialspoint.com/how-to-open-a-webcam-using-javascript -->
-    <!---
-        <button id="startBtn" onclick="openCam()">Open Webcam</button>
-        <br/><br/>
-        <video id="videoCam"></video>
-        <script>
-           function openCam(){
-              let All_mediaDevices=navigator.mediaDevices
-              if (!All_mediaDevices || !All_mediaDevices.getUserMedia) {
-                 console.log("getUserMedia() not supported.");
-                 return;
-              }
-              All_mediaDevices.getUserMedia({
-                 audio: true,
-                 video: true
-              })
-              .then(function(vidStream) {
-                 var video = document.getElementById('videoCam');
-                 if ("srcObject" in video) {
-                    video.srcObject = vidStream;
-                 } else {
-                    video.src = window.URL.createObjectURL(vidStream);
-                 }
-                 video.onloadedmetadata = function(e) {
-                    video.play();
-                 };
-              })
-              .catch(function(e) {
-                 console.log(e.name + ": " + e.message);
-              });
-           }
-        </script>
-
-    -->
-    <div class = "uploaded-image">
-      <img id="output" width="200" />
-      
-      <script>
-      var loadFile = function(event) {
-        var image = document.getElementById('output');
-        image.src = URL.createObjectURL(event.target.files[0]);
-      };
-      </script>
-    </div>
-
-    <div class = "button-container">
-      <label for="file" class = "cam-btn">Upload Image</label>
-      <input type="file"  accept="image/*" name="image" id="file"  onchange="loadFile(event)">
-    </div>
-
+    <h2> About Us </h2>
 
 
   </body>

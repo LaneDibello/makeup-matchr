@@ -8,6 +8,14 @@
     font-weight: 1000;
 }
 
+.offcanvas-header {
+    background-color: #52489C;
+}
+
+.offcanvas-body {
+    background-color: #52489C;
+}
+
 .main_body {
     background-color: #BBC2C4;
     /* background-image: url(../assets/shock.jfif); */
@@ -28,4 +36,10 @@ input[type="file"] {
 .button-container {
     padding: 1% 1% 1% 1%;
     text-align: center;
+}
+
+.uploaded-image {
+    align-items: center;
+    text-align: center;
+    padding: 1% 1% 1% 1%;
 }
