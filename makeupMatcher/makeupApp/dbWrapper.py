@@ -29,7 +29,7 @@ def pushProduct(prod: dict):
     db.reference('Products').push().set(prod) # pushes a new Products into the product listing wiht a unique ID and sets it's data to the provided product data
 
 
-def getProductByName(name: str) -> Optional[Dict[str, str]]:
+def getProductByName(name: str) -> Optional[dict]:
     """
     Finds the first product with the provided name in the products table
         `name`: The 'Name' parameter from the database 
@@ -41,7 +41,7 @@ def getProductByName(name: str) -> Optional[Dict[str, str]]:
     return list(products.values())[0] # Restructure the OrderedDict as a list of values, and grab the first
 
 
-def getProductByUID(uid: str) -> Optional[Dict[str, str]]:
+def getProductByUID(uid: str) -> Optional[dict]:
     """
     THIS IS LESS USEFUL UNDER OUR CURRENT SCHEMA, MOSTLY FOR DEBUG PURPOSES
     Retrieves a single product from the Database using its UID.
@@ -56,19 +56,23 @@ def getProductByUID(uid: str) -> Optional[Dict[str, str]]:
     product['UID'] = uid
     return product
 
-def getProductsByQuery():
+#finish implementing!
+def getProductsByColorRange(redMin: int, redMax: int, greenMin: int, greenMax: int, blueMin: int, blueMax: int) -> List[dict]:
+    """
+    Returns a List of dictionaries featuring products, whose color values are within these ranges
+    """
+    ref = db.reference('Products') # Get reference to Products Collection
     pass
 
-
 # TEST SECTION - DELETE ME
-# pushProduct(
-# {
-#   "Blue": 255,
-#   "Green": 0,
-#   "Name": "test2",
-#   "Red": 0,
-#   "URL": "https://www.test.com/",
-#   "Vendor": "cosmetics inc"
-# })
+pushProduct(
+{
+  "Blue": 255,
+  "Green": 0,
+  "Name": "test2",
+  "Red": 0,
+  "URL": "https://www.test.com/",
+  "Vendor": "cosmetics inc"
+})
 prod = getProductByName('test2')
 print(prod)
