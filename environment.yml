@@ -5,9 +5,7 @@ dependencies:
   - django
   - pillow
   - pip
+  - psycopg2
   - python=3.10.9
   - selenium
   - opencv
-  - pip:
-    - pyrebase4
-
