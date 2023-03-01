@@ -115,7 +115,7 @@ class Product:
         
         return True
 
-    def __validate(self) -> bool:
+    def validate(self) -> bool:
         valid: bool = True
 
         if not self.__validate_vendor():
@@ -145,7 +145,7 @@ class Product:
 
     def to_list(self) -> list:
         self.__clean()
-        self.__validate()
+        self.validate()
 
         product: list = [
             self.name,
@@ -162,23 +162,15 @@ class Product:
 
 
 class Scraper:
+    __rate_limit: float
+
     __args: dict = {
+        'limit': None,
         'base': None
     }
 
-    __product_links: set
-
-    __product_template: dict  = {
-        'name': None,
-        'url': None,
-        'vendor': None,
-        'red': None,
-        'green': None,
-        'blue': None
-    }
-
-    __products: dict
-
+    __product_links: set[str]
+    __products: list[Product]
 
     def __init__(self, args: dict) -> None:
         """Requires a dictionary with all keys in the '__args' dictionary"""
@@ -192,59 +184,30 @@ class Scraper:
             self.__args[key] = args[key]
 
 
-    def __random_sleep(mu: float):
+    def __random_sleep(self):
         """Some sites don't like web scraping and this ensures the scraper doesn't get blacklisted"""
 
         # This should make the 90% confidence interval close to [mu - 0.25, mu + 0.25]
         sigma: float = SLEEP_JITTER / 1.644854
 
-        length: float = normal(mu, sigma)
+        length: float = normal(self.__args['limit'], sigma)
         if length < 0:
             length = 0
         
         sleep(length)
 
-
-    def __scrape_links(self, rate_limit: float = 0) -> None:
+    def __scrape_links(self) -> None:
         self.__product_links.add()
 
-
-    def __scrape_name(self) -> None:
-        self.__data['name'] = None
-
-
-    def __scrape_url(self) -> None:
-        self.__data['url'] = None
-
-
-    def __scrape_vendor(self) -> None:
-        self.__data['vendor'] = None
+    def __scrape_product(self, product_url: str) -> Product:
+        return None
     
-
-    def __scrape_rgb(self) -> None:
-        self.__data['red'] = None
-        self.__data['green'] = None
-        self.__data['blue'] = None
+    def scrape(self, processes: int = 1) -> None:
+        self.__rate_limit = self.__args['limit'] * processes
+        
+        self.__scrape_links()
+        with Pool(processes) as p:
+            self.__products = p.map(self.__scrape_product, self.__product_links)
     
-
-    def scrape_data(self, rate_limit: float = 0) -> None:
-        return
-
-
-    def get_data(self) -> dict | None:
-        if None in self.__data.values():
-            return None
-        
-        if not self.__data['red'] in range(256):
-            return None
-        
-        if not self.__data['green'] in range(256):
-            return None
-        
-        if not self.__data['blue'] in range(256):
-            return None
-
-        return self.__data
-
-
-test: Scraper = Scraper({})
+    def to_tsv(self) -> str:
+        return None
