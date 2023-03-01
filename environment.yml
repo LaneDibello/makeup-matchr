@@ -3,6 +3,7 @@ channels:
   - defaults
 dependencies:
   - django
+  - numpy
   - pip
   - python=3.10.9
   - selenium
