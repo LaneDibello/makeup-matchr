@@ -23,6 +23,8 @@ def ResizeWithAspectRatio(image, width=None, height=None, inter=cv2.INTER_AREA):
 
   return cv2.resize(image, dim, interpolation=inter)
 
+'''@param: img PIL Image '''
+'''@return: outImg  OpenCV or None'''
 def CorrectImage(img : Image):
   try:
     wbModel = wb_srgb.WBsRGB(gamut_mapping=GAMUT_MAPPIGN, upgraded=UPGRADED_MODEL);
