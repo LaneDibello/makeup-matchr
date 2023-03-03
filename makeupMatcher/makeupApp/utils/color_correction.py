@@ -1,5 +1,5 @@
 import cv2
-# from PIL import Image
+from PIL import Image
 import os, sys
 from classes import WBsRGB as wb_srgb
 
@@ -21,11 +21,15 @@ def ResizeWithAspectRatio(image, width=None, height=None, inter=cv2.INTER_AREA):
 
   return cv2.resize(image, dim, interpolation=inter)
 
-def CorrectImage(img ):
-  wbModel = wb_srgb.WBsRGB(gamut_mapping=GAMUT_MAPPIGN, upgraded=UPGRADED_MODEL);
-  I = cv2.imread(img);
-  outImg = wbModel.correctImage(I);
-  return outImg;
+def CorrectImage(img : Image):
+  try:
+    wbModel = wb_srgb.WBsRGB(gamut_mapping=GAMUT_MAPPIGN, upgraded=UPGRADED_MODEL);
+    I = cv2.imread(img);
+    outImg = wbModel.correctImage(I);
+    return outImg;
+  except:
+    print("Error: Image could not be proccessed");
+    return None;
 
 
 # input and options
@@ -37,7 +41,8 @@ if __name__ == '__main__':
   os.makedirs('.', exist_ok=True)
   outImg = CorrectImage(in_img);
   cv2.imwrite('./' + 'result.jpg', outImg * 255);
-  if imshow == 1:
+
+  if IMG_SHOW:
     cv2.imshow('our result', ResizeWithAspectRatio(outImg, width=800))
     cv2.waitKey()
     cv2.destroyAllWindows()
