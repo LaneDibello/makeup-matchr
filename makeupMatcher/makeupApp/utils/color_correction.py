@@ -1,6 +1,8 @@
 import cv2
 from PIL import Image
 import os, sys
+
+import numpy
 from classes import WBsRGB as wb_srgb
 
 UPGRADED_MODEL : int  = 1;
@@ -24,8 +26,10 @@ def ResizeWithAspectRatio(image, width=None, height=None, inter=cv2.INTER_AREA):
 def CorrectImage(img : Image):
   try:
     wbModel = wb_srgb.WBsRGB(gamut_mapping=GAMUT_MAPPIGN, upgraded=UPGRADED_MODEL);
-    I = cv2.imread(img);
-    outImg = wbModel.correctImage(I);
+    # transform PIL to openCV
+    open_cv_img = numpy.array(img);
+    open_cv_img = open_cv_img[:, :, ::-1].copy();
+    outImg = wbModel.correctImage(open_cv_img); # pass the opencv convertion
     return outImg;
   except:
     print("Error: Image could not be proccessed");
@@ -39,7 +43,8 @@ imshow = 1  # show input/output image
 
 if __name__ == '__main__':
   os.makedirs('.', exist_ok=True)
-  outImg = CorrectImage(in_img);
+  pill_image = Image.open(in_img);
+  outImg = CorrectImage(pill_image);
   cv2.imwrite('./' + 'result.jpg', outImg * 255);
 
   if IMG_SHOW:
