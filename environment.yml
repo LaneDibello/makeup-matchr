@@ -4,6 +4,7 @@ channels:
 dependencies:
   - django
   - numpy
+  - conda-forge::pathos
   - pip
   - python=3.10.9
   - selenium

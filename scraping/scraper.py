@@ -1,8 +1,8 @@
 import re
-from multiprocessing import Pool
 from time import sleep
 
 from numpy.random import normal
+from pathos.multiprocessing import ProcessingPool as Pool
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
@@ -37,6 +37,18 @@ class Product:
     red: int = None
     green: int = None
     blue: int = None
+
+    def __str__(self) -> str:
+        output: str = f'Vendor:  {self.vendor}\n'
+        output += f'URL:  {self.url}\n'
+        
+        output += f'Brand:  {self.brand}\n'
+        output += f'Product Name:  {self.name}\n'
+        output += f'Color Code:  {self.code}\n'
+
+        output += f'(R, G, B):  ({self.red}, {self.green}, {self.blue})'
+
+        return output
 
     def __clean(self) -> None:
         self.vendor = self.vendor.strip().replace('\t', ' ')
@@ -162,15 +174,15 @@ class Product:
 
 
 class Scraper:
-    __rate_limit: float
+    __rate_limit: float = None
 
     __args: dict = {
         'limit': None,
         'base': None
     }
 
-    __product_links: set[str]
-    __products: list[Product]
+    __product_links: set[str] = set()
+    __products: list[Product] = list()
 
     def __init__(self, args: dict) -> None:
         """Requires a dictionary with all keys in the '__args' dictionary"""
@@ -197,10 +209,16 @@ class Scraper:
         sleep(length)
 
     def __scrape_links(self) -> None:
-        self.__product_links.add()
+        with webdriver.Chrome(options=OPTIONS) as driver:
+            driver.get(self.__args['base'])
+        
+        self.__product_links.add('https://docs.python.org/3/library/multiprocessing.html')
 
-    def __scrape_product(self, product_url: str) -> Product:
-        return None
+    def __scrape_product(self, product_link: str) -> Product:
+        with webdriver.Chrome(options=OPTIONS) as driver:
+            driver.get(product_link)
+        
+        return Product()
     
     def scrape(self, processes: int = 1) -> None:
         self.__rate_limit = self.__args['limit'] * processes
@@ -208,6 +226,18 @@ class Scraper:
         self.__scrape_links()
         with Pool(processes) as p:
             self.__products = p.map(self.__scrape_product, self.__product_links)
+        
+        for product in self.__products:
+            print(product)
     
     def to_tsv(self) -> str:
         return None
+
+
+if __name__ == '__main__':
+    args: dict = {
+        'limit': 5,
+        'base': 'https://www.sephora.com/shop/foundation-makeup'
+    }
+    test: Scraper = Scraper(args)
+    test.scrape()
