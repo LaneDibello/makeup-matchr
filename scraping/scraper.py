@@ -8,6 +8,10 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.remote.webelement import WebElement
+
+# Amount of time to sleep before timing out
+TIMEOUT: int = 5
 
 # Sleep length 90% CI: [limit - SLEEP_JITTER, limit + SLEEP_JITTER]
 SLEEP_JITTER: float = 0.25
@@ -178,7 +182,9 @@ class Scraper:
 
     __args: dict = {
         'limit': None,
-        'base': None
+        'base': None,
+        'next': None,
+        'product': None
     }
 
     __product_links: set[str] = set()
@@ -209,10 +215,41 @@ class Scraper:
         sleep(length)
 
     def __scrape_links(self) -> None:
-        with webdriver.Chrome(options=OPTIONS) as driver:
+        with webdriver.Chrome(options=OPTIONS) as driver:            
             driver.get(self.__args['base'])
-        
-        self.__product_links.add('https://docs.python.org/3/library/multiprocessing.html')
+            driver.maximize_window()
+            driver.set_page_load_timeout(30)
+
+            wait: WebDriverWait = WebDriverWait(driver, TIMEOUT)
+
+            is_next: bool = True
+            while is_next:
+                is_next = False
+
+                page_height: int = int(driver.execute_script("return document.body.scrollHeight"))
+                window_height: int = driver.get_window_size()['height']
+                
+                for i in range(int(page_height / window_height) + 1):
+                    driver.execute_script(f'window.scrollTo(0, {i * window_height});')
+
+                    wait.until(ec.element_to_be_clickable((By.CLASS_NAME, self.__args['product'])))
+                    elements: list[WebElement] = driver.find_elements_by_class_name(self.__args['product'])
+
+                    for element in elements:
+                        href: str = element.get_attribute('href')
+                        href = href.split('?')[0]
+                        self.__product_links.add(href)
+                    
+                try:
+                    driver.find_element_by_class_name(self.__args['next']).click()
+                    is_next = True
+                except:
+                    pass
+                
+                
+
+        print(self.__product_links)
+        print(len(self.__product_links))
 
     def __scrape_product(self, product_link: str) -> Product:
         with webdriver.Chrome(options=OPTIONS) as driver:
@@ -224,11 +261,11 @@ class Scraper:
         self.__rate_limit = self.__args['limit'] * processes
         
         self.__scrape_links()
-        with Pool(processes) as p:
-            self.__products = p.map(self.__scrape_product, self.__product_links)
+        # with Pool(processes) as p:
+        #     self.__products = p.map(self.__scrape_product, self.__product_links)
         
-        for product in self.__products:
-            print(product)
+        # for product in self.__products:
+        #     print(product)
     
     def to_tsv(self) -> str:
         return None
@@ -237,7 +274,9 @@ class Scraper:
 if __name__ == '__main__':
     args: dict = {
         'limit': 5,
-        'base': 'https://www.sephora.com/shop/foundation-makeup'
+        'base': 'https://www.sephora.com/shop/foundation-makeup',
+        'next': 'css-bk5oor',
+        'product': 'css-klx76'
     }
     test: Scraper = Scraper(args)
     test.scrape()
