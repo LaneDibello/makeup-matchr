@@ -2,7 +2,6 @@ import re
 from io import BytesIO
 from time import sleep
 
-import numpy as np
 from colorthief import ColorThief
 from numpy.random import normal
 from pathos.multiprocessing import ProcessingPool as Pool
