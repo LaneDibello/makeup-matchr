@@ -2,6 +2,7 @@ import re
 from io import BytesIO
 from time import sleep
 
+import numpy as np
 from colorthief import ColorThief
 from numpy.random import normal
 from pathos.multiprocessing import ProcessingPool as Pool
@@ -333,6 +334,7 @@ class Scraper:
                 product.price = price
 
                 # Get product color
+                # NOTE: Color may be incorrect if screenshot has none swatch colors in it
                 swatch_link: str = swatch.get_attribute('src')
                 (product.red, product.green, product.blue) = self.__get_color(swatch.screenshot_as_png)
 
@@ -345,19 +347,22 @@ class Scraper:
 
         # self.__scrape_links()
         # self.__product_links.add('https://www.sephora.com/product/tinted-moisturizer-broad-spectrum-P109936')
-        # self.__product_links.add('https://www.sephora.com/product/un-cover-up-cream-foundation-P450899')
-        # self.__product_links.add('https://www.sephora.com/product/beautyblender-bounce-trade-always-on-radiant-skin-tint-P477136')
+        self.__product_links.add('https://www.sephora.com/product/un-cover-up-cream-foundation-P450899')
+        self.__product_links.add('https://www.sephora.com/product/beautyblender-bounce-trade-always-on-radiant-skin-tint-P477136')
         # self.__product_links.add('https://www.sephora.com/product/luminous-foundation-P449124')
         # print(self.__get_color('https://www.sephora.com/productimages/sku/s2270932+sw.jpg'))
 
-        self.__scrape_product('https://www.sephora.com/product/tinted-moisturizer-broad-spectrum-P109936')
+        # self.__scrape_product('https://www.sephora.com/product/tinted-moisturizer-broad-spectrum-P109936')
 
-        # with Pool(processes) as p:
-        #     self.__products = p.map(self.__scrape_product, self.__product_links)
+        with Pool(processes) as p:
+            self.__products = p.map(self.__scrape_product, self.__product_links)
         
-        for product in self.__products:
-            print()
-            print(product)
+        products: set[Product] = set()
+        for product_set in self.__products:
+            for product in product_set:
+                products.add(product)
+        
+        self.__products = products
     
     def to_tsv(self) -> str:
         return None
