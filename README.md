@@ -7,8 +7,12 @@ On Windows use **Command Prompt** when working with **conda**
 ## Start Server
 ```
 cd makeupMatcher
+```
+```
 conda activate matchr
-python3 manage.py runserver
+```
+```
+python manage.py runserver
 ```
 
 # Conda
