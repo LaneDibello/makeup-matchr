@@ -8,7 +8,7 @@ def index(request):
     return render(request, 'index.html')
 
 def about(request):
-    return render(request, 'aboutus.html')
+    return render(request, 'about.html')
 
 def test(request):
     query_results = Product.objects.all()[:20]
@@ -16,3 +16,6 @@ def test(request):
         'query_results':query_results,
     }
     return render(request, 'testing.html', context)
+
+def results(request):
+    return render(request, 'results.html')
