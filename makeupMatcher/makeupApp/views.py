@@ -8,7 +8,7 @@ def index(request):
     return render(request, 'index.html')
 
 def about(request):
-    return render(request, 'aboutus.html')
+    return render(request, 'about.html')
 
 def test(request):
     query_results = Product.objects.all()[:20]
