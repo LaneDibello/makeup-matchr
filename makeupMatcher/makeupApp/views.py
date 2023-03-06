@@ -5,6 +5,10 @@ from makeupApp.models import Product
 # This is just a test that grabs the test product from the table
 
 def index(request):
-    return render(request, 'index.html')
+    return render(request, 'index.html');
 
+def about(request):
+    return render(request, 'aboutus.html');
 
+def test(request):
+    return render(request, 'testing.html');
