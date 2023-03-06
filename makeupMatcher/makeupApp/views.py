@@ -16,3 +16,6 @@ def test(request):
         'query_results':query_results,
     }
     return render(request, 'testing.html', context)
+
+def results(request):
+    return render(request, 'results.html')
