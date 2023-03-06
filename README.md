@@ -1,4 +1,11 @@
-# makeup-matchr
+# Django
+
+## Start Server
+```
+python3 manage.py runserver
+```
+
+# Conda
 
 ## First Time Setup
 ```
