@@ -1,0 +1,45 @@
+.navbar {
+    background-color: #52489C;
+    color: white; 
+}
+
+.navbar-brand {
+    color: white !important;
+    font-weight: 1000;
+}
+
+.offcanvas-header {
+    background-color: #52489C;
+}
+
+.offcanvas-body {
+    background-color: #52489C;
+}
+
+.main_body {
+    background-color: #BBC2C4;
+    /* background-image: url(../assets/shock.jfif); */
+}
+
+.cam-btn {
+    border: 1px solid #000;
+    background-color: #52489C;
+    color: white;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.button-container {
+    padding: 1% 1% 1% 1%;
+    text-align: center;
+}
+
+.uploaded-image {
+    align-items: center;
+    text-align: center;
+    padding: 1% 1% 1% 1%;
+}

@@ -1,33 +1,18 @@
 from django.shortcuts import render
-import pyrebase
+from makeupApp.models import Product
 
-# Create your views here.
-
-firebaseConfig = {
-  'apiKey': "AIzaSyCVyDzI_-Pb_y4zvOerNhN-ucHbt7IvLRc",
-  'authDomain': "makeup-matchr.firebaseapp.com",
-  'databaseURL': "https://makeup-matchr-default-rtdb.firebaseio.com",
-  'projectId': "makeup-matchr",
-  'storageBucket': "makeup-matchr.appspot.com",
-  'messagingSenderId': "1006679463606",
-  'appId': "1:1006679463606:web:245af1e8d9377edbb2f817"
-}
-
-firebase=pyrebase.initialize_app(firebaseConfig)
-authe = firebase.auth()
-database=firebase.database()
+# Gutted by the old firebase stuff 
+# This is just a test that grabs the test product from the table
 
 def index(request):
-        #accessing our firebase data and storing it in a variable
-        name = database.child('Data').child('Name').get().val()
-        stack = database.child('Data').child('Stack').get().val()
-        framework = database.child('Data').child('Framework').get().val()
-    
-        context = {
-            'name':name,
-            'stack':stack,
-            'framework':framework
-        }
-        return render(request, 'index.html', context)
+    return render(request, 'index.html')
 
+def about(request):
+    return render(request, 'aboutus.html')
 
+def test(request):
+    query_results = Product.objects.all()[:20]
+    context = {
+        'query_results':query_results,
+    }
+    return render(request, 'testing.html', context)
