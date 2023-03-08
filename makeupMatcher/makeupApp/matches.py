@@ -11,7 +11,7 @@ class Match:
         self.red = red
         self.green = green
         self.blue = blue
-        self.distance = ((F('red')-self.red)**2 + (F('green')-self.green)**2) + (F('blue')-self.blue)**2
+        self.distance = ((F('red')-self.red)**2 + (F('green')-self.green)**2 + (F('blue')-self.blue)**2)
 
 
     def getMatches(self, rThresh : int = 3, gThresh : int = 3, bThresh : int = 3) -> QuerySet:
