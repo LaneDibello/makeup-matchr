@@ -18,4 +18,8 @@ def test(request):
     return render(request, 'testing.html', context)
 
 def results(request):
-    return render(request, 'results.html')
+    query_results = Product.objects.all()[:20]
+    context = {
+        'query_results':query_results,
+    }
+    return render(request, 'results.html', context)
