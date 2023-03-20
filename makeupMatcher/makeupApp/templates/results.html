@@ -3,61 +3,36 @@
 
 {% block title %}Makeup Matchr | Results{% endblock %}
 
-{% block style %}<link rel="stylesheet" href="{% static '../static/styles/results.css' %}" />{% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{% static '../static/styles/results.css' %}" />{% endblock %}
 
 {% block content %}
 
 <h1>Results Page</h1>
 
 <div id="tablePadding">
-    <table class="table">
+    <table class="table table-dark table-striped table-hover">
         <thead>
             <tr>
-                <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
+                <th scope="col">name</th>
+                <th scope="col">brand</th>
+                <th scope="col">colorcode</th>
+                <th scope="col">price</th>
+                <th scope="col">url</th>
             </tr>
         </thead>
         <tbody>
+            {% for item in query_results %}
             <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
+                <td scope="row">{{ item.name }}</td>
+                <td>{{ item.brand }}</td>
+                <td>{{ item.colorcode }}</td>
+                <td>{{ item.price }}</td>
+                <td>{{ item.url }}</td>
             </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-            </tr>
-            <tr>
-                <th scope="row">3</th>
-                <td colspan="2">Larry the Bird</td>
-                <td>@twitter</td>
-            </tr>
+            {% endfor %}
         </tbody>
     </table>
 </div>
-
-<table>
-    <tr>
-        <th>name</th>
-        <th>brand</th>
-        <th>colorcode</th>
-        <th>price</th>
-        <th>url</th>
-    </tr>
-    {% for item in query_results %}
-    <tr>
-        <td>{{ item.name }}</td>
-        <td>{{ item.brand }}</td>
-        <td>{{ item.colorcode }}</td>
-        <td>{{ item.price }}</td>
-        <td>{{ item.url }}</td>
-    </tr>
-    {% endfor %}
-</table>
 
 {% endblock %}
