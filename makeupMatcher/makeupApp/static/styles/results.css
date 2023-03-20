@@ -1,7 +1,9 @@
-#tablePadding {
-    padding: 2%;
-}
-
 div {
     text-align: center;
+}
+
+#tablePadding {
+    padding-left: 2%;
+    padding-right: 2%;
+    padding-bottom: 2%;
 }
