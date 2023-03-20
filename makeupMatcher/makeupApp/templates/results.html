@@ -1,7 +1,51 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Makeup Matchr | Results{% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static '../static/styles/results.css' %}" />
+    <!-- <link rel="stylesheet" type="text/css" href="extensions/filter-control/bootstrap-table-filter-control.css"> -->
+{% endblock %}
+
+{% block script %}
+    <script src="extensions/filter-control/bootstrap-table-filter-control.js"></script>
+    <script src="extensions/natural-sorting/bootstrap-table-natural-sorting.js"></script>
+{% endblock %}
 
 {% block content %}
 
 <h1>Results Page</h1>
+
+<div id="tablePadding">
+    <table class="table table-dark table-striped table-hover    " id="table" data-url="json/data1.json"
+        data-filter-control="true" data-show-search-clear-button="true">
+        <thead>
+            <tr>
+                <!-- <th scope="col" data-field="name" data-filter-control="input">name</th>
+                <th scope="col" data-field="brand" data-filter-control="select">brand</th> -->
+                <th scope="col" data-sortable="true" data-sorter="alphanum">name</th>
+                <th scope="col" data-sortable="true" data-sorter="alphanum">brand</th>
+                <th scope="col">colorcode</th>
+                <th scope="col" data-sortable="true" data-sorter="alphanum">price</th>
+                <th scope="col">url</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in query_results %}
+            <tr>
+                <td scope="row">{{ item.name }}</td>
+                <td>{{ item.brand }}</td>
+                <td>{{ item.colorcode }}</td>
+                <td>{{ item.price }}</td>
+                <td><a href="{{ item.url }}" target="_blank">Product purchase link</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div>
+        <button type="button" class="btn btn-success">Load More</button>
+    </div>
+</div>
 
 {% endblock %}
