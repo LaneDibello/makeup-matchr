@@ -1,0 +1,21 @@
+.about-row {
+    content: "";
+    display: table;
+    clear: both;
+    align-items: center;
+    width: 100%;
+    text-align: center;
+}
+
+.about-column {
+    float: left;
+    width: 20%;
+    padding: 10px;
+    height: 300px;
+}
+
+.about-img {
+    width: 200px;
+    border-radius: 10%;
+    border: 2px solid #000;
+}

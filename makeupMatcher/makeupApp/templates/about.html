@@ -4,8 +4,60 @@
 
 {% block content %}
 
+{% load static %}
+
 <title>Makeup Matchr | About</title>
 
-<h1>About Us</h1>
+<div class = "page-title">
+    <h1>About Us</h1>
+</div>
+<br>
+<h2>
+    Our Team
+</h2>
+<br>
+<div class="about-row">
+    <div class="about-column">
+        <h3>
+            Michael Cadieux
+        </h3>
+        <img class = "about-img" src= "{% static '../static/images/michael_headshot.jpg' %}">
+        <p>
+            I am a monkey
+        </p>
+    </div>
+    <div class="about-column">
+        <h3>
+            Bennett Carley
+        </h3>
+        <p>
+            I am a scrape
+        </p>
+    </div>
+    <div class="about-column">
+        <h3>
+            Carlos Carrillo
+        </h3>
+        <p>
+            I am a camera
+        </p>
+    </div>
+    <div class="about-column">
+        <h3>
+            Lane Dibello
+        </h3>
+        <p>
+            I am a vampire
+        </p>
+    </div>
+    <div class="about-column">
+        <h3>
+            Mario Sandoval
+        </h3>
+        <p>
+            I am a pokemon
+        </p>
+    </div>
+</div>
 
 {% endblock %}
