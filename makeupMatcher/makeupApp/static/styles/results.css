@@ -2,6 +2,12 @@ div {
     text-align: center;
 }
 
+.table-wrapper {
+    max-height: 100px;
+    overflow: auto;
+    display:inline-block;
+  }
+
 #tablePadding {
     padding-left: 2%;
     padding-right: 2%;
