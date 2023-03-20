@@ -18,7 +18,7 @@
 <h1>Results Page</h1>
 
 <div id="tablePadding">
-    <table class="table table-dark table-striped table-hover table-sm" id="table" data-url="json/data1.json"
+    <table class="table table-dark table-striped table-hover    " id="table" data-url="json/data1.json"
         data-filter-control="true" data-show-search-clear-button="true">
         <thead>
             <tr>
@@ -38,13 +38,13 @@
                 <td>{{ item.brand }}</td>
                 <td>{{ item.colorcode }}</td>
                 <td>{{ item.price }}</td>
-                <td>{{ item.url }}</td>
+                <td><a href="{{ item.url }}" target="_blank">Product purchase link</a></td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
     <div>
-        <button type="button" class="btn btn-success">Success</button>
+        <button type="button" class="btn btn-success">Load More</button>
     </div>
 </div>
 
