@@ -18,7 +18,7 @@ def test(request):
     return render(request, 'testing.html', context)
 
 def results(request):
-    query_results = Product.objects.all()[:20]
+    query_results = Product.objects.all()[:10]
     context = {
         'query_results':query_results,
     }
