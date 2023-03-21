@@ -16,17 +16,18 @@
         data-filter-control="true" data-show-search-clear-button="true">
         <thead>
             <tr>
-                <th scope="col" data-sortable="true" data-sorter="alphanum">name</th>
-                <th scope="col" data-sortable="true" data-sorter="alphanum">brand</th>
-                <th scope="col">colorcode</th>
-                <th scope="col" data-sortable="true" data-sorter="alphanum">price</th>
-                <th scope="col">url</th>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Brand</th>
+                <th scope="col">Colorcode</th>
+                <th scope="col">Price</th>
+                <th scope="col">Purchase Link</th>
             </tr>
         </thead>
         <tbody>
             {% for item in match_results %}
             <tr>
-                <td></td>
+                <td class="counterCell"></td>
                 <th scope="row">{{ item.name }}</th>
                 <td>{{ item.brand }}</td>
                 <td>{{ item.colorcode }}</td>
