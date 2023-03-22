@@ -31,7 +31,7 @@
                     <td>{{ item.name }}</td>
                     <td>{{ item.brand }}</td>
                     <td>{{ item.colorcode }}</td>
-                    <td>{{ item.price }}</td>
+                    <td>${{ item.price|floatformat:"2" }}</td>
                     <td><a href="{{ item.url }}" target="_blank">Product purchase link</a></td>
                 </tr>
                 {% endfor %}
