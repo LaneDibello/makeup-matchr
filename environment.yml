@@ -3,9 +3,13 @@ channels:
   - defaults
 dependencies:
   - django
+  - numpy
+  - conda-forge::pathos
   - pillow
   - pip
   - psycopg2
   - python=3.10.9
   - selenium
   - opencv
+  - pip:
+    - colorthief
