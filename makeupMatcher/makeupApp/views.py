@@ -9,7 +9,9 @@ def about(request):
     return render(request, 'about.html')
 
 def test(request):
-    query_results = Product.objects.all()[:20]
+    m = Match(197, 140, 133)
+    query_results = m.getMatchesKNearest(20, brandName='Lancome')
+    print(len(query_results))
     context = {
         'query_results':query_results,
     }
