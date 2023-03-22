@@ -12,7 +12,7 @@ table {
 }
 
 .table-responsive {
-    height: 300px;
+    height: 60vh;
     overflow-y: auto;
 }
 
