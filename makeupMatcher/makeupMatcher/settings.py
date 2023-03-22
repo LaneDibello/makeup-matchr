@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-njj&55u5wh8$s)k!&r&8-k(70us-a%as!n5k6hs&ubdar*w1kb
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['matchr.csw2vmcpvfrj.us-east-2.rds.amazonaws.com', '3.143.123.53', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -77,8 +77,12 @@ WSGI_APPLICATION = 'makeupMatcher.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'F0undat10n',
+        'HOST': 'matchr.csw2vmcpvfrj.us-east-2.rds.amazonaws.com',
+        'PORT': '5432'
     }
 }
 
@@ -123,3 +127,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

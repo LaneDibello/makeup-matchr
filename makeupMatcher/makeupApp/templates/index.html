@@ -1,4 +1,31 @@
-<h1>Firebase Database</h1>
+{% extends 'base.html' %}
 
-<p>Hi, my name is {{name}} and i code {{stack}}.</p>
-<p>My favourite framework is {{framework}}</p>
+{% block content %}
+
+<h1 class="visually-hidden">Upload Image</h1>
+
+<div class="uploaded-image">
+  <img id="output" width="200" />
+
+  <script>
+    var loadFile = function (event) {
+      var image = document.getElementById('output');
+      image.src = URL.createObjectURL(event.target.files[0]);
+    };
+  </script>
+</div>
+
+<div class="button-container">
+  <form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+      <label for="file" class="cam-btn">Upload Image</label>
+      <input type="file" accept="image/*" name="image" id="file" onchange="loadFile(event)">
+      <button type="submit">submit</button>
+  </form>
+
+  {% if file_url %}
+    <img src="{{ file_url }}" alt="">
+  {% endif %}
+</div>
+
+{% endblock %}

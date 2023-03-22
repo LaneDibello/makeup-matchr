@@ -1,33 +1,25 @@
 from django.shortcuts import render
-import pyrebase
-
-# Create your views here.
-
-firebaseConfig = {
-  'apiKey': "AIzaSyCVyDzI_-Pb_y4zvOerNhN-ucHbt7IvLRc",
-  'authDomain': "makeup-matchr.firebaseapp.com",
-  'databaseURL': "https://makeup-matchr-default-rtdb.firebaseio.com",
-  'projectId': "makeup-matchr",
-  'storageBucket': "makeup-matchr.appspot.com",
-  'messagingSenderId': "1006679463606",
-  'appId': "1:1006679463606:web:245af1e8d9377edbb2f817"
-}
-
-firebase=pyrebase.initialize_app(firebaseConfig)
-authe = firebase.auth()
-database=firebase.database()
+from makeupApp.models import Product
+from django.core.files.storage import FileSystemStorage
 
 def index(request):
-        #accessing our firebase data and storing it in a variable
-        name = database.child('Data').child('Name').get().val()
-        stack = database.child('Data').child('Stack').get().val()
-        framework = database.child('Data').child('Framework').get().val()
-    
-        context = {
-            'name':name,
-            'stack':stack,
-            'framework':framework
-        }
-        return render(request, 'index.html', context)
+    if request.method == 'POST':
+        upload = request.FILES['image']
+        fss = FileSystemStorage()
+        file = fss.save(upload.name, upload)
+        file_url = fss.url(file)
+        return render(request, 'index.html', {'file_url' : file_url})
+    return render(request, 'index.html')
 
+def about(request):
+    return render(request, 'about.html')
 
+def test(request):
+    query_results = Product.objects.all()[:20]
+    context = {
+        'query_results':query_results,
+    }
+    return render(request, 'testing.html', context)
+
+def results(request):
+    return render(request, 'results.html')
