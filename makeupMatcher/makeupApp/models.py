@@ -18,3 +18,10 @@ class Product(models.Model):
     class Meta:
         managed = False
         db_table = 'products'
+    
+    @staticmethod
+    def getBrands():
+        '''
+        Returns the full list of brands in the database alphabetically
+        '''
+        return Product.objects.values('brand').distinct().order_by('brand')
