@@ -5,9 +5,15 @@ div {
 table {
     counter-reset: tableCount;     
 }
+
 .counterCell:before {              
     content: counter(tableCount); 
     counter-increment: tableCount; 
+}
+
+.table-responsive {
+    height: 300px;
+    overflow-y: auto;
 }
 
 .table-wrapper {
