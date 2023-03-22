@@ -27,3 +27,12 @@ table {
     padding-right: 2%;
     padding-bottom: 2%;
 }
+
+#filterPadding {
+    padding-right: 2%;
+}
+
+#alignText {
+    text-align: end;
+    margin-bottom: 0;
+}
