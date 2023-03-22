@@ -27,7 +27,7 @@ class Match:
     def getMatchesKNearest(self, count : int, price_l : float = 0.0, price_h : float = float('inf'), brandName : str = ""):
         """
         Returns a collection of `count` products ordered by their euclidean distance from the product's color.
-        Products will be proced between `price_l` and `price_h`.
+        Products will be priced between `price_l` and `price_h`.
         If `brandName` is specified, then they will only be of that brand.
         """
         if (brandName != ""):
