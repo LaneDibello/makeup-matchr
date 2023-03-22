@@ -2,6 +2,20 @@ div {
     text-align: center;
 }
 
+table {
+    counter-reset: tableCount;     
+}
+
+.counterCell:before {              
+    content: counter(tableCount); 
+    counter-increment: tableCount; 
+}
+
+.table-responsive {
+    height: 60vh;
+    overflow-y: auto;
+}
+
 .table-wrapper {
     max-height: 100px;
     overflow: auto;
