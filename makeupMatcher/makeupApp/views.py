@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from makeupApp.models import Product
 from django.core.files.storage import FileSystemStorage
+from makeupApp.matches import Match
 
 def index(request):
     if request.method == 'POST':
@@ -15,29 +16,17 @@ def about(request):
     return render(request, 'about.html')
 
 def test(request):
-    query_results = Product.objects.all()[:20]
+    m = Match(197, 140, 133)
+    query_results = m.getMatchesKNearest(20, brandName='Lancome')
+    print(len(query_results))
     context = {
         'query_results':query_results,
     }
     return render(request, 'testing.html', context)
 
 def results(request):
-    return render(request, 'results.html')
-
-def home_view(request):
-    context = {}
-    if request.method == "POST":
-        form = imgForm(request.POST, request.FILES)
-        if form.is_valid():
-            name = form.cleaned_data.get("name")
-            img = form.cleaned_data.get("img_field")
-            obj = imgModel.objects.create(
-                                 title = name,
-                                 img = img
-                                 )
-            obj.save()
-            print(obj)
-    else:
-        form = imgForm()
-    context['form']= form
-    return render(request, 'index.html', context)
+    match_results = Match(240, 184, 160)
+    context = {
+        'match_results':match_results.getMatchesKNearest(100),
+    }
+    return render(request, 'results.html', context)
