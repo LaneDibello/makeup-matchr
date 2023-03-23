@@ -11,6 +11,8 @@ def index(request):
         file = fss.save(upload.name, upload)
         file_url = fss.url(file)
         correct_url = CorrectImage('../makeupMatcher/', file_url)
+        if correct_url == "": # image could not be corrected 
+            correct_url = '/media/empty.jpg' # insert empty image
         # with the file url read the image
         return render(request, 'index.html', {'file_url' : correct_url})
     return render(request, 'index.html')

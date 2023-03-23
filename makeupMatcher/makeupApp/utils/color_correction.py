@@ -26,12 +26,17 @@ def ResizeWithAspectRatio(image, width=None, height=None, inter=cv2.INTER_AREA):
 '''@param: img PIL Image '''
 '''@return: outImg  OpenCV or None'''
 def CorrectImage(basedir, url) -> str:
-    I = cv2.imread(basedir + url);
-    wbModel = wb_srgb.WBsRGB(gamut_mapping=GAMUT_MAPPIGN,upgraded=UPGRADED_MODEL)
-    outImg =  wbModel.correctImage(I)
-    file_url = f'{url[1:]}_result.jpg'
-    cv2.imwrite(file_url, outImg * 255)
-    return file_url
+  try:
+      I = cv2.imread(basedir + url);
+      wbModel = wb_srgb.WBsRGB(gamut_mapping=GAMUT_MAPPIGN,upgraded=UPGRADED_MODEL)
+      outImg =  wbModel.correctImage(I)
+      file_url = f'{url[1:]}_result.jpg'
+      cv2.imwrite(file_url, outImg * 255)
+      return file_url
+  except:
+    print("Error: Image Could Not Be Color Corrected\n");
+    return ""
+
 
 
 # input and options
