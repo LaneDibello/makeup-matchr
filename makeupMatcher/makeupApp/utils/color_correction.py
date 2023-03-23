@@ -3,7 +3,7 @@ from PIL import Image
 import os, sys
 
 import numpy
-from classes import WBsRGB as wb_srgb
+from makeupApp.utils.classes import WBsRGB as wb_srgb
 
 UPGRADED_MODEL : int  = 1;
 GAMUT_MAPPIGN : int = 2;
@@ -25,17 +25,13 @@ def ResizeWithAspectRatio(image, width=None, height=None, inter=cv2.INTER_AREA):
 
 '''@param: img PIL Image '''
 '''@return: outImg  OpenCV or None'''
-def CorrectImage(img : Image):
-  try:
-    wbModel = wb_srgb.WBsRGB(gamut_mapping=GAMUT_MAPPIGN, upgraded=UPGRADED_MODEL);
-    # transform PIL to openCV
-    open_cv_img = numpy.array(img);
-    open_cv_img = open_cv_img[:, :, ::-1].copy();
-    outImg = wbModel.correctImage(open_cv_img); # pass the opencv convertion
-    return outImg;
-  except:
-    print("Error: Image could not be proccessed");
-    return None;
+def CorrectImage(basedir, url) -> str:
+    I = cv2.imread(basedir + url);
+    wbModel = wb_srgb.WBsRGB(gamut_mapping=GAMUT_MAPPIGN,upgraded=UPGRADED_MODEL)
+    outImg =  wbModel.correctImage(I)
+    file_url = f'{url[1:]}_result.jpg'
+    cv2.imwrite(file_url, outImg * 255)
+    return file_url
 
 
 # input and options

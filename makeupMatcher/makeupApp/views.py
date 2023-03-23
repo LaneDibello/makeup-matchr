@@ -1,14 +1,18 @@
 from django.shortcuts import render
 from makeupApp.models import Product
 from django.core.files.storage import FileSystemStorage
+from makeupApp.utils.color_correction import CorrectImage
 
 def index(request):
+    # CorrectImage('../makeupMatcher/media/figure3.jpg')
     if request.method == 'POST':
         upload = request.FILES['image']
         fss = FileSystemStorage()
         file = fss.save(upload.name, upload)
         file_url = fss.url(file)
-        return render(request, 'index.html', {'file_url' : file_url})
+        correct_url = CorrectImage('../makeupMatcher/', file_url)
+        # with the file url read the image
+        return render(request, 'index.html', {'file_url' : correct_url})
     return render(request, 'index.html')
 
 def about(request):
