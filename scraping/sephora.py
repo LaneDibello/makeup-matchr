@@ -18,11 +18,6 @@ if __name__ == '__main__':
     }
 
     test: Scraper = Scraper(args)
-    items = test.scrape_product('https://www.sephora.com/product/it-cosmetics-your-skin-but-better-foundation-skincare-P461600')
-    for item in items:
-        print(item)
-    
-    print(len(items))
-    # test.scrape(4)
+    test.scrape(4)
 
-    # test.to_tsv()
+    test.to_tsv()
