@@ -5,9 +5,11 @@ from multiprocessing.pool import ThreadPool
 from os.path import isfile
 from time import sleep
 
+import requests
 from colorthief import ColorThief
 from numpy.random import normal
 from selenium import webdriver
+from requestium import Session, Keys
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
@@ -212,6 +214,7 @@ class Scraper:
         'name': None,
         'code': None,
         'code_attribute': None,
+        'img': None,
         'price': None
     }
 
@@ -314,7 +317,7 @@ class Scraper:
                         product.url = driver.current_url
                     else:
                         product.url = swatch.get_attribute('href')
-
+                    
                     # Set vendor
                     product.vendor = self.__args['vendor']
 
@@ -325,40 +328,60 @@ class Scraper:
                         wait.until(ec.visibility_of_element_located(self.__args['brand']))
                         element: WebElement = driver.find_element(*self.__args['brand'])
                         product.brand = element.text
-
+                    
                     # Get product name
                     wait.until(ec.visibility_of_element_located(self.__args['name']))
                     element = driver.find_element(*self.__args['name'])
                     product.name = element.text
-
+                    # print(product.name)
+                    
                     # Get product price
                     wait.until(ec.visibility_of_element_located(self.__args['price']))
                     element = driver.find_element(*self.__args['price'])
                     price: float = float(element.text.replace('$', ''))
                     product.price = price
+                    # print(product.price)
 
                     # Get color code
                     wait.until(ec.visibility_of_element_located(self.__args['code']))
                     if self.__args['click']:
-                        element: WebElement = driver.find_element(*self.__args['code'])
+                        code_element: WebElement = driver.find_element(*self.__args['code'])
                     else:
-                        element: WebElement = swatch.find_element(*self.__args['code'])
+                        code_element: WebElement = swatch.find_element(*self.__args['code'])
 
-                    code: str = element.get_attribute(self.__args['code_attribute'])
+                    if self.__args['code_attribute']:
+                        code: str = code_element.get_attribute(self.__args['code_attribute'])
+                    else:
+                        code: str = code_element.text
 
                     # Clean up the received text
                     code = code.split(': ')[-1]
                     code = code.split('-')[0]
                     product.code = code.strip()
+                    # print(product.code)
 
                     # Get product color
                     # NOTE: Color may be incorrect if screenshot has none swatch colors in it
-                    driver.execute_script("arguments[0].scrollIntoView();", swatch)
-                    (product.red, product.green, product.blue) = self.__get_color(swatch.screenshot_as_png)
+                    if self.__args['img']:
+                        img_element: WebElement = swatch.find_element(*self.__args['img'])
+                    else:
+                        img_element: WebElement = swatch
+
+                    src: WebElement = img_element.get_attribute('src')
+                    # print(src)
+
+                    s = Session(driver=driver)
+                    s.transfer_driver_cookies_to_session()
+                    img_response = s.get(src)
+
+                    if img_response.status_code != 200:
+                        raise Exception('[ERROR] Bad response')
+
+                    (product.red, product.green, product.blue) = self.__get_color(img_response.content)
 
                     products.add(product)
         except Exception as e:
-            print(e)
+            print(f'Exception: {e}')
 
         return products
     

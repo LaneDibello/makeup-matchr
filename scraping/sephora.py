@@ -7,17 +7,17 @@ if __name__ == '__main__':
         'vendor': 'Sephora',
         'next': (By.CLASS_NAME, 'css-bk5oor'),
         'product': (By.CLASS_NAME, 'css-klx76'),
-        'swatch': (By.CLASS_NAME, 'css-10zyrsm'),
+        'swatch': (By.XPATH, "//button[@data-at='swatch']"),
         'click': True,
-        'brand': (By.CLASS_NAME, 'css-1gyh3op'),
-        'name': (By.CLASS_NAME, 'css-1pgnl76'),
-        'code': (By.CLASS_NAME, 'css-15ro776'),
-        'code_attribute': 'text',
-        'price': (By.CLASS_NAME, 'css-18jtttk')
+        'brand': (By.XPATH, "//a[@data-at='brand_name']"),
+        'name': (By.XPATH, "//span[@data-at='product_name']"),
+        'code': (By.XPATH, "//div[@data-at='sku_name_label']/span"),
+        'code_attribute': None,
+        'img': (By.XPATH, "//div/img[contains(@src, 'https://www.sephora.com/productimages/sku/')]"),
+        'price': (By.XPATH, "//p[@data-comp='Price ']/span/span[1]/b")
     }
 
     test: Scraper = Scraper(args)
-
     test.scrape()
 
     test.to_tsv()
