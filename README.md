@@ -1,8 +1,25 @@
-# makeup-matchr
+# Notes
+
+On Windows use **Command Prompt** when working with **conda**
+
+# Django
+
+## Start Server
+```
+cd makeupMatcher
+```
+```
+conda activate matchr
+```
+```
+python manage.py runserver
+```
+
+# Conda
 
 ## First Time Setup
 ```
-conda env create -n matchr --file environment.yml
+conda create -n matchr --file environment.yml
 ```
 ```
 conda activate matchr
@@ -16,7 +33,7 @@ conda deactivate
 conda env remove -n matchr
 ```
 ```
-conda env create -n matchr -f environment.yml
+conda create -n matchr -f environment.yml
 ```
 ```
 conda activate matchr

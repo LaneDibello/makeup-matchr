@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Makeup Matchr | Database Test{% endblock %}
+
+{% block content %}
+
+<h1>Testing Page</h1>
+<h2>Products Demo</h2>
+<p>This brief demo is just meant to show that our database can acyivly be queired, in teh future there will be proper
+  analytics in place, that will be pulling products from here.</p>
+<p>The first 20 products in the product table:</p>
+<table>
+  <tr>
+    <th>name</th>
+    <th>vendor</th>
+    <th>red</th>
+    <th>green</th>
+    <th>blue</th>
+    <th>url</th>
+    <th>brand</th>
+    <th>colorcode</th>
+    <th>price</th>
+  </tr>
+  {% for item in query_results %}
+  <tr>
+    <td>{{ item.name }}</td>
+    <td>{{ item.vendor }}</td>
+    <td>{{ item.red }}</td>
+    <td>{{ item.green }}</td>
+    <td>{{ item.blue }}</td>
+    <td>{{ item.url }}</td>
+    <td>{{ item.brand }}</td>
+    <td>{{ item.colorcode }}</td>
+    <td>{{ item.price }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+{% endblock %}
