@@ -13,6 +13,7 @@ if __name__ == '__main__':
         'name': (By.CLASS_NAME, 'product-name'),
         'code': (By.CLASS_NAME, 'swatch_image'),
         'code_attribute': 'alt',
+        'img': (By.CLASS_NAME, 'swatch_image'),
         'price': (By.CSS_SELECTOR, "span[itemprop='price']")
     }
 

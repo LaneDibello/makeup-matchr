@@ -6,10 +6,10 @@ from os.path import isfile
 from time import sleep
 
 import requests
-from colorthief import ColorThief
 from numpy.random import normal
+from PIL import Image
+from requestium import Keys, Session
 from selenium import webdriver
-from requestium import Session, Keys
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
@@ -246,9 +246,10 @@ class Scraper:
         sleep(length)
     
     def __get_color(self, img: bytes) -> tuple[int, int, int]:
-        color_thief: ColorThief = ColorThief(BytesIO(img))
+        img = Image.open(BytesIO(img))
+        img = img.resize((1, 1), resample=0)
 
-        return color_thief.get_color(quality=1)
+        return img.getpixel((0, 0))
 
     def __scrape_links(self) -> None:
         with webdriver.Chrome(options=OPTIONS) as driver:            
