@@ -18,11 +18,10 @@ class Product(models.Model):
     class Meta:
         managed = False
         db_table = 'products'
-
-# Create your models here.
-class imgModel(models.Model):
-	title = models.CharField(max_length = 200)
-	img = models.ImageField(null=True, blank = True, upload_to = "images/")
-
-	def __str__(self):
-		return self.title
+    
+    @staticmethod
+    def getBrands():
+        '''
+        Returns the full list of brands in the database alphabetically
+        '''
+        return Product.objects.values('brand').distinct().order_by('brand')

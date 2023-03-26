@@ -3,16 +3,12 @@ from makeupApp.models import Product
 from makeupApp.matches import Match
 
 def index(request):
-    if request.method == 'POST':
-        upload = request.FILES['image']
-        fss = FileSystemStorage()
-        file = fss.save(upload.name, upload)
-        file_url = fss.url(file)
-        return render(request, 'index.html', {'file_url' : file_url})
     return render(request, 'index.html')
 
 def about(request):
     return render(request, 'about.html')
+def output(request):
+    return render(request, 'output.html')
 
 def test(request):
     m = Match(197, 140, 133)

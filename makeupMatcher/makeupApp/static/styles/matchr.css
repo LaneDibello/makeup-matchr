@@ -44,37 +44,6 @@ input[type="file"] {
     padding: 1% 1% 1% 1%;
 }
 
-.page-title {
-    align-items: center;
-    text-align: center;
-}
-
 h1 {
     text-align: center;
-}
-
-h2 {
-    text-align: center;
-}
-
-.about-row {
-    content: "";
-    display: table;
-    clear: both;
-    align-items: center;
-    width: 100%;
-    text-align: center;
-}
-
-.about-column {
-    float: left;
-    width: 20%;
-    padding: 10px;
-    height: 300px;
-}
-
-.about-img {
-    width: 200px;
-    border-radius: 10%;
-    border: 2px solid #000;
 }
