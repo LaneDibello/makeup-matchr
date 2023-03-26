@@ -19,6 +19,22 @@
     border-radius: 10%;
     border: 2px solid #000;
 }
+
 h2 {
     text-align: center;
+}
+
+.why-container {
+    position: relative;
+    float: left;
+    margin: 2.5% !important;
+    width: 45%;
+}
+
+p {
+    font-size: large;
+}
+
+ul {
+    text-align: left;
 }
