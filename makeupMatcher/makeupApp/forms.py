@@ -1,12 +1,14 @@
 from django import forms
+from makeupApp.models import Product
 
 class imgForm(forms.Form):
 	name = forms.CharField()
 	img_field = forms.ImageField()
   
+brandChoices = Product.getBrands()
+
 # creating a form
 class InputForm(forms.Form):
-
 	priceL = forms.IntegerField(widget = forms.NumberInput
                     (attrs = {'class':'form-control',
 			                'placeholder':'Min',
@@ -19,10 +21,16 @@ class InputForm(forms.Form):
 			                'aria-label':'Maximum price point'}),
 			     label = "Max",
 			     required = False)
-	brandName = forms.CharField(max_length = 200,
-			     widget = forms.TextInput
-                    (attrs = {'class':'form-control',
-			                'placeholder':'Brand',
-			                'aria-label':'Enter Brand Name'}),
-			    label = "Brand",
-			    required = False)
+	# brandName = forms.CharField(max_length = 200,
+	# 		     widget = forms.TextInput
+    #                 (attrs = {'class':'form-control',
+	# 		                'placeholder':'Brand',
+	# 		                'aria-label':'Enter Brand Name'}),
+	# 		    label = "Brand",
+	# 		    required = False)
+	brandName = forms.TypedChoiceField(
+					coerce = str,
+					choices = zip(range(len(brandChoices)), brandChoices),
+				    label = "Brand",
+				    required=False
+				   )
