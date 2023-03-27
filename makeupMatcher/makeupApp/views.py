@@ -27,7 +27,7 @@ def about(request):
 def picker(request):
     coords_s = request.META['QUERY_STRING']
     coords = [0,0]
-    coords = list(map(int, re.findall(r'\d+', coords_s)))
+    if (coords_s != ""): coords = list(map(int, re.findall(r'\d+', coords_s)))
     im = Image.open('./makeupApp/static/images/mm_icon.png').load()
     color = im[coords[0], coords[1]]
     context = {
