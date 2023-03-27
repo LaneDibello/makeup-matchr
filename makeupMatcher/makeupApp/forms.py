@@ -1,5 +1,9 @@
 from django import forms
 
+class imgForm(forms.Form):
+	name = forms.CharField()
+	img_field = forms.ImageField()
+  
 # creating a form
 class InputForm(forms.Form):
 

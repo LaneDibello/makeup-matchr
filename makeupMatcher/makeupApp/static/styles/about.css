@@ -1,0 +1,40 @@
+.about-row {
+    content: "";
+    display: table;
+    clear: both;
+    align-items: center;
+    width: 100%;
+    text-align: center;
+}
+
+.about-column {
+    float: left;
+    width: 20%;
+    padding: 10px;
+    height: 300px;
+}
+
+.about-img {
+    width: 200px;
+    border-radius: 10%;
+    border: 2px solid #000;
+}
+
+h2 {
+    text-align: center;
+}
+
+.why-container {
+    position: relative;
+    float: left;
+    margin: 2.5% !important;
+    width: 45%;
+}
+
+p {
+    font-size: large;
+}
+
+ul {
+    text-align: left;
+}

@@ -21,6 +21,8 @@ def index(request):
 
 def about(request):
     return render(request, 'about.html')
+def output(request):
+    return render(request, 'output.html')
 
 def test(request):
     m = Match(197, 140, 133)
