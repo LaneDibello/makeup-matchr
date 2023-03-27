@@ -3,6 +3,7 @@ from makeupApp.models import Product
 from django.core.files.storage import FileSystemStorage
 from makeupApp.utils.color_correction import CorrectImage
 from makeupApp.matches import Match
+from makeupApp.forms import InputForm
 
 def index(request):
     # CorrectImage('../makeupMatcher/media/figure3.jpg')
@@ -30,9 +31,37 @@ def test(request):
     }
     return render(request, 'testing.html', context)
 
+
+
 def results(request):
     match_results = Match(240, 184, 160)
+
     context = {
         'match_results':match_results.getMatchesKNearest(100),
     }
+    context['form'] = InputForm()
+
+    if request.method == 'POST':
+        form = InputForm(request.POST)
+        if form.is_valid():
+            priceL = request.POST.get('priceL')
+            priceM = request.POST.get('priceM')
+            brandName = request.POST.get('brandName')
+            if priceL == '' and priceM == '' and brandName == '':
+                context = {
+                    'match_results':match_results.getMatchesKNearest(100),
+                }
+            elif priceL == '' and priceM == '' and brandName != '':
+                context = {
+                    'match_results':match_results.getMatchesKNearest(100, 0, float('inf'), brandName),
+                }
+            elif priceL != '' and priceM != '' and brandName == '':
+                context = {
+                    'match_results':match_results.getMatchesKNearest(100, priceL, priceM, ""),
+                }
+            else:
+                context = {
+                    'match_results':match_results.getMatchesKNearest(100, priceL, priceM, brandName),
+                }
+            context['form'] = InputForm(request.POST)
     return render(request, 'results.html', context)
