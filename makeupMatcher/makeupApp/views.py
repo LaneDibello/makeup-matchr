@@ -2,6 +2,7 @@ from django.shortcuts import render
 from makeupApp.models import Product
 from django.core.files.storage import FileSystemStorage
 from makeupApp.utils.color_correction import CorrectImage
+from makeupApp.matches import Match
 
 def index(request):
     # CorrectImage('../makeupMatcher/media/figure3.jpg')
@@ -21,11 +22,17 @@ def about(request):
     return render(request, 'about.html')
 
 def test(request):
-    query_results = Product.objects.all()[:20]
+    m = Match(197, 140, 133)
+    query_results = m.getMatchesKNearest(20, brandName='Lancome')
+    print(len(query_results))
     context = {
         'query_results':query_results,
     }
     return render(request, 'testing.html', context)
 
 def results(request):
-    return render(request, 'results.html')
+    match_results = Match(240, 184, 160)
+    context = {
+        'match_results':match_results.getMatchesKNearest(100),
+    }
+    return render(request, 'results.html', context)
