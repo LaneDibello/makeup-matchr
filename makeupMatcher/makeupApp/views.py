@@ -4,6 +4,8 @@ from django.core.files.storage import FileSystemStorage
 from makeupApp.utils.color_correction import CorrectImage
 from makeupApp.matches import Match
 from makeupApp.forms import InputForm
+import re
+from PIL import Image
 
 def index(request):
     # CorrectImage('../makeupMatcher/media/figure3.jpg')
@@ -21,8 +23,21 @@ def index(request):
 
 def about(request):
     return render(request, 'about.html')
-def output(request):
-    return render(request, 'output.html')
+
+def picker(request):
+    coords_s = request.META['QUERY_STRING']
+    coords = [0,0]
+    coords = list(map(int, re.findall(r'\d+', coords_s)))
+    im = Image.open('./makeupApp/static/images/mm_icon.png').load()
+    color = im[coords[0], coords[1]]
+    context = {
+        'x': coords[0],
+        'y': coords[1],
+        'r': color[0],
+        'g': color[1],
+        'b': color[2],
+    }
+    return render(request, 'picker.html', context)
 
 def test(request):
     m = Match(197, 140, 133)
@@ -30,8 +45,9 @@ def test(request):
     print(len(query_results))
     context = {
         'query_results':query_results,
+    
     }
-    return render(request, 'testing.html', context)
+    return render(request, 'picker.html', context)
 
 
 
