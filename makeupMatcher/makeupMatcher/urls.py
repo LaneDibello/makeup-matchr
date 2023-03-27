@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path
 from makeupApp import views
+from django.conf import settings #add this
+from django.conf.urls.static import static #add this
 
 urlpatterns = [
     path('admin/', admin.site.urls, name="admin"),
@@ -23,4 +25,4 @@ urlpatterns = [
     path('about/', views.about, name="about"),
     path('test/', views.test, name="test"),
     path('results/', views.results, name="results"),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
