@@ -36,8 +36,6 @@ input[type="file"] {
 .button-container {
     padding: 1% 30%;
     text-align: center;
-    width: 40%;
-    float:left;
 }
 
 .uploaded-image {
