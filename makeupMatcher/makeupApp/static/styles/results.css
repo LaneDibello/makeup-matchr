@@ -6,6 +6,15 @@ table {
     counter-reset: tableCount;     
 }
 
+form {
+    margin: 0;
+    padding: 10px;
+}
+
+.dropdown {
+    margin-bottom: 10px;
+}
+
 .counterCell:before {              
     content: counter(tableCount); 
     counter-increment: tableCount; 
@@ -20,7 +29,11 @@ table {
     max-height: 100px;
     overflow: auto;
     display:inline-block;
-  }
+}
+
+.align-left {
+    text-align: end;
+}
 
 #tablePadding {
     padding-left: 2%;

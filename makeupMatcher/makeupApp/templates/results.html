@@ -4,7 +4,7 @@
 {% block title %}Makeup Matchr | Results{% endblock %}
 
 {% block style %}
-<link rel="stylesheet" href="{% static '../static/styles/results.css' %}" />
+    <link rel="stylesheet" href="{% static '../static/styles/results.css' %}" />
 {% endblock %}
 
 {% block content %}
@@ -14,21 +14,27 @@
 <div class="row" id="filterPadding">
     <div class="col-8"></div>
     <div class="col">
-        <form>
-            <div class="row">
-                <!-- Use bootstrap dropdown button to contain form -->
-                <p class="col d-flex align-items-center" id="alignText">Filter</p>
-                <div class="col">
-                    <input type="text" class="form-control" placeholder="Min" aria-label="Minimum price point">
-                </div>
-                <div class="col">
-                    <input type="text" class="form-control" placeholder="Max" aria-label="Maximum price point">
-                </div>
-                <div class="col">
-                    <input type="text" class="form-control" placeholder="Brand" aria-label="Select Brand">
-                </div>
-            </div>
-        </form>
+        <div class="dropdown align-left">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                Filter
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <form>
+                    <div class="row">
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="Min" aria-label="Minimum price point">
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="Max" aria-label="Maximum price point">
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="Brand" aria-label="Select Brand">
+                        </div>
+                    </div>
+                </form>
+            </ul>
+        </div>
     </div>
 </div>
 
