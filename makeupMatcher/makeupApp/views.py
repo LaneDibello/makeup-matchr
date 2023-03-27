@@ -5,6 +5,8 @@ from makeupApp.utils.color_correction import CorrectImage
 from makeupApp.matches import Match
 from makeupApp.forms import InputForm
 
+brandChoices = Product.getBrands()
+
 def index(request):
     # CorrectImage('../makeupMatcher/media/figure3.jpg')
     if request.method == 'POST':
@@ -48,7 +50,10 @@ def results(request):
         if form.is_valid():
             priceL = request.POST.get('priceL')
             priceM = request.POST.get('priceM')
-            brandName = request.POST.get('brandName')
+            brandidx = request.POST.get('brandName')
+            print("Brand Idx: ", brandidx)
+            brandName = brandChoices[int(brandidx)]
+            print("Brand Name: ", brandName)
             if priceL == '' and priceM == '' and brandName == '':
                 context = {
                     'match_results':match_results.getMatchesKNearest(100),
