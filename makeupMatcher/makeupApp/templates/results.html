@@ -20,7 +20,13 @@
                 Filter
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <form>
+                <form action = "" method = "post">
+                    {% csrf_token %}
+                    {{form.as_ul}}
+                    <input type="submit" value=Submit>
+                </form>
+                
+                <!-- <form>
                     <div class="row">
                         <div class="col">
                             <input type="text" class="form-control" placeholder="Min" aria-label="Minimum price point">
@@ -32,7 +38,7 @@
                             <input type="text" class="form-control" placeholder="Brand" aria-label="Select Brand">
                         </div>
                     </div>
-                </form>
+                </form> -->
             </ul>
         </div>
     </div>
