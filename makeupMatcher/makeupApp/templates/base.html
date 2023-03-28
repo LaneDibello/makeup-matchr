@@ -18,7 +18,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 
     <script>
-        function test() {
+        function delete_images() {
             $.ajax({
                     type: "POST",
                     url: '/browser_closed/',   
@@ -30,7 +30,7 @@
     {% block script %}{% endblock %}
 </head>
 
-<body class="main_body" onbeforeunload="test()">
+<body class="main_body" onbeforeunload="delete_images()">
     <header></header>
 
     {% include 'nav-bar.html' %}
