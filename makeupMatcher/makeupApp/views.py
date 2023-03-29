@@ -28,6 +28,9 @@ def index(request):
 def about(request):
     return render(request, 'about.html')
 
+def corrected(request):
+    return render(request, 'corrected.html')
+
 def picker(request):
     coords_s = request.META['QUERY_STRING']
     coords = [0,0]

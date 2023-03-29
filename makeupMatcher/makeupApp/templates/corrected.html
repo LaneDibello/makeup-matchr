@@ -23,7 +23,7 @@
       {% csrf_token %}
         <label for="file" class="cam-btn">Upload Image</label>
         <input type="file" accept="image/*" name="image" id="file" onchange="loadFile(event)">
-        <a href = "{% url 'output' %}"><button type="submit">submit</button></a>
+        <a href = "{% url 'results' %}"><button type="submit">submit</button></a>
     </form>
   
     {% if file_url %}
