@@ -1,12 +1,14 @@
 import pickle
 import re
 from io import BytesIO
+from multiprocessing.pool import ThreadPool
 from os.path import isfile
 from time import sleep
 
-from colorthief import ColorThief
+import requests
 from numpy.random import normal
-from pathos.multiprocessing import ProcessingPool as Pool
+from PIL import Image
+from requestium import Keys, Session
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.webdriver import WebDriver
@@ -24,6 +26,7 @@ SLEEP_JITTER: float = 0.25
 # Makes Selenium run in headless mode and disables log prints
 OPTIONS = Options()
 OPTIONS.headless = False
+OPTIONS.add_extension('./uBlock-Origin.crx')
 OPTIONS.add_experimental_option('excludeSwitches', ['enable-logging'])
 
 def error(msg: str, quit: bool = True) -> None:
@@ -197,7 +200,7 @@ class Product:
 
 
 class Scraper:
-    __rate_limit: float = None
+    # __rate_limit: float = None
 
     __args: dict = {
         'limit': None,
@@ -206,9 +209,12 @@ class Scraper:
         'next': None,
         'product': None,
         'swatch': None,
+        'click': None,
         'brand': None,
         'name': None,
         'code': None,
+        'code_attribute': None,
+        'img': None,
         'price': None
     }
 
@@ -240,21 +246,10 @@ class Scraper:
         sleep(length)
     
     def __get_color(self, img: bytes) -> tuple[int, int, int]:
-        color_thief: ColorThief = ColorThief(BytesIO(img))
+        img = Image.open(BytesIO(img))
+        img = img.resize((1, 1), resample=0)
 
-        return color_thief.get_color(quality=1)
-
-    def __is_loaded(self, driver: WebDriver):
-        # print(driver.page_source)
-        # print(type(driver))
-        # if not driver.execute_script('return jQuery.active'):
-        #     return False
-        response = driver.execute_script('document.readyState')
-        print(response)
-        if not response == 'complete':
-            return False
-        
-        return True
+        return img.getpixel((0, 0))
 
     def __scrape_links(self) -> None:
         with webdriver.Chrome(options=OPTIONS) as driver:            
@@ -263,7 +258,6 @@ class Scraper:
             driver.set_page_load_timeout(30)
 
             wait: WebDriverWait = WebDriverWait(driver, TIMEOUT)
-            # wait.until(self.__is_loaded)
 
             is_next: bool = True
             while is_next:
@@ -276,8 +270,8 @@ class Scraper:
                     self.__random_sleep()
                     driver.execute_script(f'window.scrollTo(0, {i * window_height});')
 
-                    wait.until(ec.element_to_be_clickable((By.CLASS_NAME, self.__args['product'])))
-                    elements: list[WebElement] = driver.find_elements_by_class_name(self.__args['product'])
+                    wait.until(ec.element_to_be_clickable(self.__args['product']))
+                    elements: list[WebElement] = driver.find_elements(*self.__args['product'])
 
                     for element in elements:
                         href: str = element.get_attribute('href')
@@ -285,7 +279,7 @@ class Scraper:
                         self.__product_links.add(href)
                     
                 try:
-                    driver.find_element_by_class_name(self.__args['next']).click()
+                    driver.find_element(*self.__args['next']).click()
                     is_next = True
                 except:
                     pass
@@ -293,7 +287,7 @@ class Scraper:
         print(self.__product_links)
         print(len(self.__product_links))
 
-    def __scrape_product(self, product_link: str) -> Product:
+    def scrape_product(self, product_link: str) -> Product:
         self.__random_sleep()
         products: set[Product] = set()
 
@@ -305,84 +299,108 @@ class Scraper:
 
                 wait: WebDriverWait = WebDriverWait(driver, TIMEOUT)
 
-                wait.until(ec.element_to_be_clickable((By.CLASS_NAME, self.__args['swatch'])))
-                swatches: list[WebElement] = driver.find_elements_by_class_name(self.__args['swatch'])
+                wait.until(ec.element_to_be_clickable(self.__args['swatch']))
+                swatches: list[WebElement] = driver.find_elements(*self.__args['swatch'])
 
                 for swatch in swatches:
                     product: Product = Product()
 
-                    try:
-                        swatch.click()
-                    except:
-                        continue
+                    if self.__args['click']:
+                        try:
+                            swatch.click()
+                        except:
+                            continue
 
                     self.__random_sleep()
 
                     # Get URL
-                    product.url = driver.current_url
-
+                    if self.__args['click']:
+                        product.url = driver.current_url
+                    else:
+                        product.url = swatch.get_attribute('href')
+                    
                     # Set vendor
                     product.vendor = self.__args['vendor']
 
                     # Get brand
-                    wait.until(ec.visibility_of_element_located((By.CLASS_NAME, self.__args['brand'])))
-                    element: WebElement = driver.find_element_by_class_name(self.__args['brand'])
-                    product.brand = element.text
-
+                    if not self.__args['brand']:
+                        product.brand = self.__args['vendor']
+                    else:
+                        wait.until(ec.visibility_of_element_located(self.__args['brand']))
+                        element: WebElement = driver.find_element(*self.__args['brand'])
+                        product.brand = element.text
+                    
                     # Get product name
-                    wait.until(ec.visibility_of_element_located((By.CLASS_NAME, self.__args['name'])))
-                    element = driver.find_element_by_class_name(self.__args['name'])
+                    wait.until(ec.visibility_of_element_located(self.__args['name']))
+                    element = driver.find_element(*self.__args['name'])
                     product.name = element.text
+                    # print(product.name)
+                    
+                    # Get product price
+                    wait.until(ec.visibility_of_element_located(self.__args['price']))
+                    element = driver.find_element(*self.__args['price'])
+                    price: float = float(element.text.replace('$', ''))
+                    product.price = price
+                    # print(product.price)
 
                     # Get color code
-                    wait.until(ec.visibility_of_element_located((By.CLASS_NAME, self.__args['code'])))
-                    element = driver.find_element_by_class_name(self.__args['code'])
-                    code: str = element.text
+                    wait.until(ec.visibility_of_element_located(self.__args['code']))
+                    if self.__args['click']:
+                        code_element: WebElement = driver.find_element(*self.__args['code'])
+                    else:
+                        code_element: WebElement = swatch.find_element(*self.__args['code'])
+
+                    if self.__args['code_attribute']:
+                        code: str = code_element.get_attribute(self.__args['code_attribute'])
+                    else:
+                        code: str = code_element.text
 
                     # Clean up the received text
                     code = code.split(': ')[-1]
                     code = code.split('-')[0]
                     product.code = code.strip()
-
-                    # Get product price
-                    wait.until(ec.visibility_of_element_located((By.CLASS_NAME, self.__args['price'])))
-                    element = driver.find_element_by_class_name(self.__args['price'])
-                    price: float = float(element.text.replace('$', ''))
-                    product.price = price
+                    # print(product.code)
 
                     # Get product color
                     # NOTE: Color may be incorrect if screenshot has none swatch colors in it
-                    swatch_link: str = swatch.get_attribute('src')
-                    (product.red, product.green, product.blue) = self.__get_color(swatch.screenshot_as_png)
+                    if self.__args['img']:
+                        img_element: WebElement = swatch.find_element(*self.__args['img'])
+                    else:
+                        img_element: WebElement = swatch
+
+                    src: WebElement = img_element.get_attribute('src')
+                    # print(src)
+
+                    s = Session(driver=driver)
+                    s.transfer_driver_cookies_to_session()
+                    img_response = s.get(src)
+
+                    if img_response.status_code != 200:
+                        raise Exception('[ERROR] Bad response')
+
+                    (product.red, product.green, product.blue) = self.__get_color(img_response.content)
 
                     products.add(product)
-        except:
-            pass
+        except Exception as e:
+            print(f'Exception: {e}')
 
         return products
     
     def scrape(self, processes: int = 1) -> None:
-        self.__rate_limit = self.__args['limit'] * processes
-
-        # self.__product_links.add('https://www.sephora.com/product/tinted-moisturizer-broad-spectrum-P109936')
-        # self.__product_links.add('https://www.sephora.com/product/un-cover-up-cream-foundation-P450899')
-        # self.__product_links.add('https://www.sephora.com/product/beautyblender-bounce-trade-always-on-radiant-skin-tint-P477136')
-        # self.__product_links.add('https://www.sephora.com/product/luminous-foundation-P449124')
-        # print(self.__get_color('https://www.sephora.com/productimages/sku/s2270932+sw.jpg'))
-
-        # self.__scrape_product('https://www.sephora.com/product/tinted-moisturizer-broad-spectrum-P109936')
+        # self.__rate_limit = self.__args['limit'] * processes
 
         link_file = f'{self.__args["vendor"]}_links.pkl'
         if isfile(link_file):
             with open(link_file, 'rb') as file:
                 self.__product_links = pickle.load(file)
+        else:
+            self.__scrape_links()
+
+            with open(link_file, 'wb') as file:
+                pickle.dump(self.__product_links, file)
         
-        self.__scrape_links()
-        with open(link_file, 'wb') as file:
-            pickle.dump(self.__product_links, file)
-        
-        with Pool(processes) as p:
-            self.__products = p.map(self.__scrape_product, self.__product_links)
+        with ThreadPool(processes) as p:
+            self.__products = p.map(self.scrape_product, self.__product_links)
         
         with open(f'{self.__args["vendor"]}_products.pkl', 'wb') as file:
             pickle.dump(self.__products, file)
@@ -400,24 +418,3 @@ class Scraper:
                 line = '\t'.join([str(elem) for elem in product.to_list()])
                 line += '\n'
                 file.write(line)
-
-
-if __name__ == '__main__':
-    args: dict = {
-        'limit': 5,
-        'base': 'https://www.sephora.com/shop/foundation-makeup',
-        'vendor': 'Sephora',
-        'next': 'css-bk5oor',
-        'product': 'css-klx76',
-        'swatch': 'css-10zyrsm',
-        'brand': 'css-1gyh3op',
-        'name': 'css-1pgnl76',
-        'code': 'css-15ro776',
-        'price': 'css-18jtttk'
-    }
-
-    test: Scraper = Scraper(args)
-
-    test.scrape(4)
-
-    test.to_tsv()
