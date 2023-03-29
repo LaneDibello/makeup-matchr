@@ -6,6 +6,7 @@ from os.path import isfile
 from time import sleep
 
 import requests
+import base64
 from numpy.random import normal
 from PIL import Image
 from requestium import Keys, Session
@@ -200,7 +201,7 @@ class Product:
 
 
 class Scraper:
-    # __rate_limit: float = None
+    __rate_limit: float = None
 
     __args: dict = {
         'limit': None,
@@ -239,7 +240,14 @@ class Scraper:
         # This should make the 90% confidence interval close to [mu - 0.25, mu + 0.25]
         sigma: float = SLEEP_JITTER / 1.644854
 
-        length: float = normal(self.__args['limit'], sigma)
+
+        if self.__rate_limit:
+            limit: float = self.__rate_limit
+        else:
+            limit: float = self.__args['limit']
+        
+        length: float = normal(limit, sigma)
+
         if length < 0:
             length = 0
         
@@ -291,14 +299,12 @@ class Scraper:
         self.__random_sleep()
         products: set[Product] = set()
 
-        try:
-            with webdriver.Chrome(options=OPTIONS) as driver:
+        with webdriver.Chrome(options=OPTIONS) as driver:
+            try:
                 driver.get(product_link)
                 driver.maximize_window()
                 driver.refresh()
-
-                driver.set_page_load_timeout(30)
-
+                
                 wait: WebDriverWait = WebDriverWait(driver, TIMEOUT)
                 
                 wait.until(ec.element_to_be_clickable(self.__args['swatch']))
@@ -380,17 +386,20 @@ class Scraper:
                     if img_response.status_code != 200:
                         raise Exception('[ERROR] Bad response')
 
-                    (product.red, product.green, product.blue) = self.__get_color(img_response.content)
+                    color: tuple = self.__get_color(img_response.content)
+                    (product.red, product.green, product.blue) = (color[0], color[1], color[2])
 
                     products.add(product)
-        except Exception as e:
-            driver.save_screenshot(f'/errors/{product.url}.png')
-            print(f'Exception: {e}')
+            except Exception as e:
+                link_bytes = base64.b64encode(product_link.encode('ascii'))
+                driver.save_screenshot(f"screenshots/{link_bytes.decode('ascii')}.png")
+
+                print(f'Exception: {e}')
 
         return products
     
     def scrape(self, processes: int = 1) -> None:
-        # self.__rate_limit = self.__args['limit'] * processes
+        self.__rate_limit = self.__args['limit'] * processes
 
         link_file = f'{self.__args["vendor"]}_links.pkl'
         if isfile(link_file):

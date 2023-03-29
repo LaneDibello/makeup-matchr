@@ -18,6 +18,9 @@ if __name__ == '__main__':
     }
 
     test: Scraper = Scraper(args)
-    test.scrape()
+    test.scrape(4)
+    # products = test.scrape_product('https://www.ulta.com/p/ultra-cc-cream-radiant-foundation-with-100-physical-broad-spectrum-spf-17-pimprod2026038')
+    # for product in products:
+    #     print(product)
 
     test.to_tsv()
