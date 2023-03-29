@@ -29,7 +29,12 @@ def about(request):
     return render(request, 'about.html')
 
 def corrected(request):
-    return render(request, 'corrected.html')
+    # get the corrected picture and pass it in the context
+    file_url = request.session['image_url']
+    context = {
+        'file_url' : "../" + file_url,
+    }
+    return render(request, 'corrected.html', context)
 
 def picker(request):
     coords_s = request.META['QUERY_STRING']
