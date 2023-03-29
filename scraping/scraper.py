@@ -341,7 +341,7 @@ class Scraper:
                     # Get product price
                     wait.until(ec.visibility_of_element_located(self.__args['price']))
                     element = driver.find_element(*self.__args['price'])
-                    price: float = float(element.text.replace('$', ''))
+                    price: float = float(re.search('\d+\.\d{2}', element.text).group(0))
                     product.price = price
                     # print(product.price)
 
