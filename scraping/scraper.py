@@ -295,10 +295,12 @@ class Scraper:
             with webdriver.Chrome(options=OPTIONS) as driver:
                 driver.get(product_link)
                 driver.maximize_window()
+                driver.refresh()
+
                 driver.set_page_load_timeout(30)
 
                 wait: WebDriverWait = WebDriverWait(driver, TIMEOUT)
-
+                
                 wait.until(ec.element_to_be_clickable(self.__args['swatch']))
                 swatches: list[WebElement] = driver.find_elements(*self.__args['swatch'])
 
@@ -382,6 +384,7 @@ class Scraper:
 
                     products.add(product)
         except Exception as e:
+            driver.save_screenshot(f'/errors/{product.url}.png')
             print(f'Exception: {e}')
 
         return products
