@@ -28,6 +28,14 @@ def index(request):
 def about(request):
     return render(request, 'about.html')
 
+def corrected(request):
+    # get the corrected picture and pass it in the context
+    file_url = request.session['image_url']
+    context = {
+        'file_url' : "../" + file_url,
+    }
+    return render(request, 'corrected.html', context)
+
 def picker(request):
     coords_s = request.META['QUERY_STRING']
     coords = [0,0]
@@ -58,6 +66,8 @@ def test(request):
 
 
 def results(request):
+    #delete the images after the resutls page
+    delete_images(request)
     match_results = Match(240, 184, 160)
 
     context = {
@@ -90,7 +100,7 @@ def results(request):
             context['form'] = InputForm(request.POST)
     return render(request, 'results.html', context)
 
-def browser_closed(request):
+def delete_images(request):
     ''' Delete the pictures of user when browser is closed '''
 
     # delete the raw user image
