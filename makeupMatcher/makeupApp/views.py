@@ -4,7 +4,9 @@ from django.core.files.storage import FileSystemStorage
 from makeupApp.utils.color_correction import CorrectImage
 from makeupApp.matches import Match
 from makeupApp.forms import InputForm
+from django.http import HttpResponse
 import re
+import os
 from PIL import Image
 
 def index(request):
@@ -14,6 +16,7 @@ def index(request):
         fss = FileSystemStorage()
         file = fss.save(upload.name, upload)
         file_url = fss.url(file)
+        request.session['raw_image_url'] = file_url[1:]
         correct_url = CorrectImage('../makeupMatcher/', file_url)
         if correct_url == "": # image could not be corrected 
             correct_url = '/media/empty.jpg' # insert empty image
@@ -86,3 +89,16 @@ def results(request):
                 }
             context['form'] = InputForm(request.POST)
     return render(request, 'results.html', context)
+
+def browser_closed(request):
+    ''' Delete the pictures of user when browser is closed '''
+
+    # delete the raw user image
+    if 'raw_image_url' in request.session:
+        if os.path.exists(request.session['raw_image_url']):
+            os.remove(request.session['raw_image_url'])
+    #check for corrected image  and delete it
+    if 'image_url' in request.session:
+        if os.path.exists(request.session['image_url']):
+            os.remove(request.session['image_url'])
+    return HttpResponse('SUCCESS FROM PYTHON')
