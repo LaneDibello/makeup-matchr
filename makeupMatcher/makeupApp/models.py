@@ -1,5 +1,8 @@
 from django.db import models
 
+def grabValue(d : dict):
+    return list(d.values())[0]
+
 # auto generated products 
 class Product(models.Model):
     name = models.CharField(max_length=128)
@@ -24,4 +27,4 @@ class Product(models.Model):
         '''
         Returns the full list of brands in the database alphabetically
         '''
-        return Product.objects.values('brand').distinct().order_by('brand')
+        return [""] + list(map(grabValue, list(Product.objects.values('brand').distinct().order_by('brand'))))

@@ -9,6 +9,8 @@ import re
 import os
 from PIL import Image
 
+brandChoices = Product.getBrands()
+
 def index(request):
     # CorrectImage('../makeupMatcher/media/figure3.jpg')
     if request.method == 'POST':
@@ -80,23 +82,21 @@ def results(request):
         if form.is_valid():
             priceL = request.POST.get('priceL')
             priceM = request.POST.get('priceM')
-            brandName = request.POST.get('brandName')
-            if priceL == '' and priceM == '' and brandName == '':
-                context = {
-                    'match_results':match_results.getMatchesKNearest(100),
-                }
-            elif priceL == '' and priceM == '' and brandName != '':
-                context = {
-                    'match_results':match_results.getMatchesKNearest(100, 0, float('inf'), brandName),
-                }
-            elif priceL != '' and priceM != '' and brandName == '':
-                context = {
-                    'match_results':match_results.getMatchesKNearest(100, priceL, priceM, ""),
-                }
-            else:
-                context = {
+            brandidx = request.POST.get('brandName')
+            print("Brand Idx: ", brandidx)
+            brandName = brandChoices[int(brandidx)]
+            print("Brand Name: ", brandName)
+            if not priceL:
+                priceL = 0
+            if not priceM:
+                priceM = float('inf')
+            if not brandName:
+                brandName = ""
+
+            context = {
                     'match_results':match_results.getMatchesKNearest(100, priceL, priceM, brandName),
                 }
+            
             context['form'] = InputForm(request.POST)
     return render(request, 'results.html', context)
 
