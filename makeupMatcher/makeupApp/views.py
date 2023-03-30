@@ -54,21 +54,16 @@ def results(request):
             print("Brand Idx: ", brandidx)
             brandName = brandChoices[int(brandidx)]
             print("Brand Name: ", brandName)
-            if priceL == '' and priceM == '' and brandName == '':
-                context = {
-                    'match_results':match_results.getMatchesKNearest(100),
-                }
-            elif priceL == '' and priceM == '' and brandName != '':
-                context = {
-                    'match_results':match_results.getMatchesKNearest(100, 0, float('inf'), brandName),
-                }
-            elif priceL != '' and priceM != '' and brandName == '':
-                context = {
-                    'match_results':match_results.getMatchesKNearest(100, priceL, priceM, ""),
-                }
-            else:
-                context = {
+            if not priceL:
+                priceL = 0
+            if not priceM:
+                priceM = float('inf')
+            if not brandName:
+                brandName = ""
+
+            context = {
                     'match_results':match_results.getMatchesKNearest(100, priceL, priceM, brandName),
                 }
+            
             context['form'] = InputForm(request.POST)
     return render(request, 'results.html', context)
