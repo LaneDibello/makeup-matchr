@@ -19,7 +19,7 @@ python manage.py runserver
 
 ## First Time Setup
 ```
-conda create -n matchr --file environment.yml
+conda env create -n matchr --file environment.yml
 ```
 ```
 conda activate matchr
@@ -33,7 +33,7 @@ conda deactivate
 conda env remove -n matchr
 ```
 ```
-conda create -n matchr -f environment.yml
+conda env create -f enviornment.yml
 ```
 ```
 conda activate matchr

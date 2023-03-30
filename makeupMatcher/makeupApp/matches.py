@@ -31,7 +31,7 @@ class Match:
         If `brandName` is specified, then they will only be of that brand.
         """
         if (brandName != ""):
-            return Product.objects.filter(price__range = (price_l, price_h), brand=brandName).annotate(distance=self.distance).order_by('distance')[:count]
+            return Product.objects.filter(price__range = (price_l, price_h), brand__iexact=brandName).annotate(distance=self.distance).order_by('distance')[:count]
         return Product.objects.filter(price__range = (price_l, price_h)).annotate(distance=self.distance).order_by('distance')[:count]
     
 

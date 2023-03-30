@@ -17,6 +17,7 @@ def index(request):
         correct_url = CorrectImage('../makeupMatcher/', file_url)
         if correct_url == "": # image could not be corrected 
             correct_url = '/media/empty.jpg' # insert empty image
+        request.session['image_url'] = correct_url
         # with the file url read the image
         return render(request, 'index.html', {'file_url' : correct_url})
     return render(request, 'index.html')
@@ -28,7 +29,8 @@ def picker(request):
     coords_s = request.META['QUERY_STRING']
     coords = [0,0]
     if (coords_s != ""): coords = list(map(int, re.findall(r'\d+', coords_s)))
-    im = Image.open('./makeupApp/static/images/mm_icon.png').load()
+    file_url = request.session['image_url']
+    im = Image.open('../makeupMatcher/' + file_url).load()
     color = im[coords[0], coords[1]]
     context = {
         'x': coords[0],
@@ -36,6 +38,7 @@ def picker(request):
         'r': color[0],
         'g': color[1],
         'b': color[2],
+        'file_url' : '../' + file_url,
     }
     return render(request, 'picker.html', context)
 
