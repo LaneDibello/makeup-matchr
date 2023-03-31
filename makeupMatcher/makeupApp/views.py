@@ -54,6 +54,15 @@ def picker(request):
         'b': color[2],
         'file_url' : '../' + file_url,
     }
+    
+    # save the rgb values to make the query in the results page
+    if request.method == "POST":
+        request.session['color-values'] = {
+            'r' : color[0],
+            'g' : color[1],
+            'b' : color[2],
+        }
+        return redirect('results')
     return render(request, 'picker.html', context)
 
 def test(request):
@@ -66,12 +75,15 @@ def test(request):
     }
     return render(request, 'picker.html', context)
 
-
-
 def results(request):
     #delete the images after the resutls page
     delete_images(request)
-    match_results = Match(240, 184, 160)
+    match_results = None
+    if 'color-values' in request.session:
+        color = request.session['color-values']
+        match_results = Match(color['r'], color['g'] , color['b'])
+    else:
+        match_results = Match(240, 184, 160)
 
     context = {
         'match_results':match_results.getMatchesKNearest(100),
