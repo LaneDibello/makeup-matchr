@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from makeupApp.models import Product
 from django.core.files.storage import FileSystemStorage
 from makeupApp.utils.color_correction import CorrectImage
@@ -13,19 +13,20 @@ brandChoices = Product.getBrands()
 
 def index(request):
     # CorrectImage('../makeupMatcher/media/figure3.jpg')
-    if request.method == 'POST':
-        upload = request.FILES['image']
-        fss = FileSystemStorage()
-        file = fss.save(upload.name, upload)
-        file_url = fss.url(file)
-        request.session['raw_image_url'] = file_url[1:]
-        correct_url = CorrectImage('../makeupMatcher/', file_url)
-        if correct_url == "": # image could not be corrected 
-            correct_url = '/media/empty.jpg' # insert empty image
-        request.session['image_url'] = correct_url
-        # with the file url read the image
-        return render(request, 'index.html', {'file_url' : correct_url})
-    return render(request, 'index.html')
+    if not request.method == 'POST':
+        return render(request, 'index.html')
+    
+    # save the image as a cookie
+    upload = request.FILES['image']
+    fss = FileSystemStorage()
+    file = fss.save(upload.name, upload)
+    file_url = fss.url(file)
+    request.session['raw_image_url'] = file_url[1:]
+    correct_url = CorrectImage('../makeupMatcher/', file_url)
+    if correct_url == "": # image could not be corrected 
+        correct_url = '/media/empty.jpg' # insert empty image
+    request.session['image_url'] = correct_url
+    return redirect('corrected')
 
 def about(request):
     return render(request, 'about.html')
@@ -101,7 +102,6 @@ def results(request):
     return render(request, 'results.html', context)
 
 def delete_images(request):
-    ''' Delete the pictures of user when browser is closed '''
 
     # delete the raw user image
     if 'raw_image_url' in request.session:
