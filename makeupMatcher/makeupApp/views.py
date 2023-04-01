@@ -51,10 +51,17 @@ def picker(request):
         'b': color[2],
         'file_url' : '../' + file_url,
     }
+
+    request.session['color'] = tuple(color[0], color[1], color[2])
     return render(request, 'picker.html', context)
 
 def test(request):
-    m = Match(197, 140, 133)
+    if request.session['color']:
+        color = request.session['color']
+    else:
+        color: tuple = (197, 140, 133)
+    
+    m = Match(*color)
     query_results = m.getMatchesKNearest(20, brandName='Lancome')
     print(len(query_results))
     context = {
