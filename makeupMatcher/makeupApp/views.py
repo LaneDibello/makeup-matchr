@@ -5,9 +5,7 @@ from makeupApp.utils.color_correction import CorrectImage
 from makeupApp.matches import Match
 from makeupApp.forms import InputForm
 from django.http import HttpResponse
-import re
-import os
-from PIL import Image
+import re, os
 
 brandChoices = Product.getBrands()
 
@@ -78,16 +76,18 @@ def test(request):
 def results(request):
     #delete the images after the resutls page
     delete_images(request)
-    match_results = None
-    if 'color-values' in request.session:
-        color = request.session['color-values']
-        match_results = Match(color['r'], color['g'] , color['b'])
-    else:
-        match_results = Match(240, 184, 160)
+
+    if not 'color-values' in request.session: # if there is no color chosen redirect to picker
+        return redirect('picker')
+    
+    color = request.session['color-values']
+    match_results = Match(color['r'], color['g'] , color['b'])
+    # match_results = Match(240, 184, 160) This is the testing result
 
     context = {
         'match_results':match_results.getMatchesKNearest(100),
     }
+
     context['form'] = InputForm()
 
     if request.method == 'POST':
