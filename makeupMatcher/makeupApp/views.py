@@ -39,6 +39,11 @@ def corrected(request):
     return render(request, 'corrected.html', context)
 
 def picker(request):
+
+    if not 'image_url' in request.session: # if there is no image redirect to index page
+        return redirect('index')
+
+    
     coords_s = request.META['QUERY_STRING']
     coords = [0,0]
     if (coords_s != ""): coords = list(map(int, re.findall(r'\d+', coords_s)))
