@@ -6,6 +6,7 @@ from makeupApp.matches import Match
 from makeupApp.forms import InputForm
 from django.http import HttpResponse
 import re, os
+from PIL import Image
 
 brandChoices = Product.getBrands()
 
