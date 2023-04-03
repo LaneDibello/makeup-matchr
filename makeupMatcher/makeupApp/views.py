@@ -7,24 +7,28 @@ from makeupApp.forms import InputForm
 from django.http import HttpResponse
 import re, os
 from PIL import Image
+from io import BytesIO
+import numpy as np
+from base64 import b64encode, b64decode
 
 brandChoices = Product.getBrands()
 
 def index(request):
-    # CorrectImage('../makeupMatcher/media/figure3.jpg')
     if not request.method == 'POST':
         return render(request, 'index.html')
     
-    # save the image as a cookie
-    upload = request.FILES['image']
-    fss = FileSystemStorage()
-    file = fss.save(upload.name, upload)
-    file_url = fss.url(file)
-    request.session['raw_image_url'] = file_url[1:]
-    correct_url = CorrectImage('../makeupMatcher/', file_url)
-    if correct_url == "": # image could not be corrected 
-        correct_url = '/media/empty.jpg' # insert empty image
-    request.session['image_url'] = correct_url
+    img_raw = Image.open(request.FILES['image']).convert('RGB') 
+    img = CorrectImage(img_raw)
+
+    # Use raw image if color correction fails
+    if not img:
+        img = img_raw
+    
+    # Convert the image to base64
+    img_buf = BytesIO()
+    img.save(img_buf, format="JPEG")
+    request.session['image'] = b64encode(img_buf.getvalue()).decode()
+
     return redirect('corrected')
 
 def about(request):
@@ -32,23 +36,24 @@ def about(request):
 
 def corrected(request):
     # get the corrected picture and pass it in the context
-    file_url = request.session['image_url']
+    img = request.session['image']
     context = {
-        'file_url' : "../" + file_url,
+        'img_b64' : img,
     }
+
     return render(request, 'corrected.html', context)
 
 def picker(request):
-
-    if not 'image_url' in request.session: # if there is no image redirect to index page
+    if not 'image' in request.session: # if there is no image redirect to index page
         return redirect('index')
 
-    
     coords_s = request.META['QUERY_STRING']
     coords = [0,0]
     if (coords_s != ""): coords = list(map(int, re.findall(r'\d+', coords_s)))
-    file_url = request.session['image_url']
-    im = Image.open('../makeupMatcher/' + file_url).load()
+
+    img_b64 = request.session['image']
+    # im = Image.open('../makeupMatcher/' + file_url).load()
+    im = np.array(Image.open(BytesIO(b64decode(img_b64))))
     color = im[coords[0], coords[1]]
     context = {
         'x': coords[0],
@@ -56,7 +61,7 @@ def picker(request):
         'r': color[0],
         'g': color[1],
         'b': color[2],
-        'file_url' : '../' + file_url,
+        'img_b64' : img_b64,
     }
     
     # save the rgb values to make the query in the results page
@@ -80,7 +85,7 @@ def test(request):
     return render(request, 'picker.html', context)
 
 def results(request):
-    #delete the images after the resutls page
+    #delete the images after the results page
     delete_images(request)
 
     if not 'color-values' in request.session: # if there is no color chosen redirect to picker

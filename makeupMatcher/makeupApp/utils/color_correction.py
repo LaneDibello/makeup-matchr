@@ -1,6 +1,7 @@
 import cv2
 from PIL import Image
 import os, sys
+from io import BytesIO
 
 import numpy
 from makeupApp.utils.classes import WBsRGB as wb_srgb
@@ -25,32 +26,36 @@ def ResizeWithAspectRatio(image, width=None, height=None, inter=cv2.INTER_AREA):
 
 '''@param: img PIL Image '''
 '''@return: outImg  OpenCV or None'''
-def CorrectImage(basedir, url) -> str:
+def CorrectImage(image) -> str:
   try:
-      I = cv2.imread(basedir + url);
-      wbModel = wb_srgb.WBsRGB(gamut_mapping=GAMUT_MAPPIGN,upgraded=UPGRADED_MODEL)
-      outImg =  wbModel.correctImage(I)
-      file_url = f'{url[1:]}_result.jpg'
-      cv2.imwrite(file_url, outImg * 255)
-      return file_url
-  except:
-    print("Error: Image Could Not Be Color Corrected\n");
-    return ""
+    i = 1/ 0
+    img_cv2 = cv2.cvtColor(numpy.array(image), cv2.COLOR_RGB2BGR)
+    wbModel = wb_srgb.WBsRGB(gamut_mapping=GAMUT_MAPPIGN,upgraded=UPGRADED_MODEL)
+    img_cor = wbModel.correctImage(img_cv2)
+
+    img_arr = cv2.cvtColor(img_cor, cv2.COLOR_BGR2RGB)
+    img_out = Image.fromarray((img_arr * 255).astype(numpy.uint8))
+  except Exception as e:
+    print(e)
+    print("Error: Image Could Not Be Color Corrected\n")
+    img_out = None
+    
+  return img_out
 
 
 
 # input and options
-in_img = 'figure3.jpg'  # input image filename
+# in_img = 'figure3.jpg'  # input image filename
 
-imshow = 1  # show input/output image
+# imshow = 1  # show input/output image
 
-if __name__ == '__main__':
-  os.makedirs('.', exist_ok=True)
-  pill_image = Image.open(in_img);
-  outImg = CorrectImage(pill_image);
-  cv2.imwrite('./' + 'result.jpg', outImg * 255);
+# if __name__ == '__main__':
+#   os.makedirs('.', exist_ok=True)
+#   pill_image = Image.open(in_img);
+#   outImg = CorrectImage(pill_image);
+#   cv2.imwrite('./' + 'result.jpg', outImg * 255);
 
-  if IMG_SHOW:
-    cv2.imshow('our result', ResizeWithAspectRatio(outImg, width=800))
-    cv2.waitKey()
-    cv2.destroyAllWindows()
+#   if IMG_SHOW:
+#     cv2.imshow('our result', ResizeWithAspectRatio(outImg, width=800))
+#     cv2.waitKey()
+#     cv2.destroyAllWindows()
