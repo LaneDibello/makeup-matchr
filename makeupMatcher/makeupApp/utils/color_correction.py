@@ -28,7 +28,6 @@ def ResizeWithAspectRatio(image, width=None, height=None, inter=cv2.INTER_AREA):
 '''@return: outImg  OpenCV or None'''
 def CorrectImage(image) -> str:
   try:
-    i = 1/ 0
     img_cv2 = cv2.cvtColor(numpy.array(image), cv2.COLOR_RGB2BGR)
     wbModel = wb_srgb.WBsRGB(gamut_mapping=GAMUT_MAPPIGN,upgraded=UPGRADED_MODEL)
     img_cor = wbModel.correctImage(img_cv2)
