@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Makeup Matchr | Home{% endblock %}
+{% block title %}Makeup Matchr | Corrected{% endblock %}
 
 {% block content %}
 
@@ -10,11 +10,13 @@
   <div class = "card">
     <div class="uploaded-image">
       {% if file_url %}
-        <img src="{{ file_url }}" height="80vh">
+        <img src="{{ file_url }}">
       {% endif %}
     </div>
-    <a href="{% url 'index' %}"><input type="button" value="Reupload"></a>
-    <a href="{% url 'picker' %}"><input type="button" value="Confirm"></a>
+    <div class="button-container">
+      <a href="{% url 'index' %}"><input class = "cam-btn" type="button" value="Reupload"></a> 
+      <a href="{% url 'picker' %}"><input class = "cam-btn" type="button" value="Confirm"></a>
+    </div>
   </div>
 </div>
 

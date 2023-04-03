@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Makeup Matchr | Output{% endblock %}
+{% block title %}Makeup Matchr | Picker{% endblock %}
 
 {% block content %}
 
@@ -12,20 +12,23 @@
 
 <h1>Color Picker</h1>
 
-<div class = "card">
+<div id="imgContainer"></div>
+<div class = "button-container">
+  <div class = "card" style="background-color: rgb({{r}},{{g}},{{b}});">
 
-  <p>X = {{x}}    Y = {{y}}</p>
-  <p>r = {{r}} g = {{g}} b = {{b}} </p>
-
-  <a href="">
-    <img class = "uploaded-image" src="{{file_url}}" alt="grammy" ismap="">
-  </a>
-
-<div class = "color-select" style="background-color: rgb({{r}},{{g}},{{b}});">Selected Color</div>
-  <form action="" method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    <button type="submit">Submit</button>
-  </form>
+    <!--  
+      <p>X = {{x}}    Y = {{y}}</p>
+      <p>r = {{r}} g = {{g}} b = {{b}} </p>
+    -->
+    <a href="">
+      <img src="{{file_url}}" alt="grammy" ismap="">
+    </a>
+    <form action="" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <button class="cam-btn" type="submit">Submit</button>
+    </form>
+  </div>
 </div>
+
 
 {% endblock %}
