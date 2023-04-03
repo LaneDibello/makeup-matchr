@@ -54,22 +54,22 @@ def picker(request):
     img_b64 = request.session['image']
     # im = Image.open('../makeupMatcher/' + file_url).load()
     im = np.array(Image.open(BytesIO(b64decode(img_b64))))
-    color = im[coords[0], coords[1]]
+    color = im[coords[1], coords[0]]
     context = {
         'x': coords[0],
         'y': coords[1],
-        'r': color[0],
-        'g': color[1],
-        'b': color[2],
+        'r': int(color[0]),
+        'g': int(color[1]),
+        'b': int(color[2]),
         'img_b64' : img_b64,
     }
     
     # save the rgb values to make the query in the results page
     if request.method == "POST":
         request.session['color-values'] = {
-            'r' : color[0],
-            'g' : color[1],
-            'b' : color[2],
+            'r' : int(color[0]),
+            'g' : int(color[1]),
+            'b' : int(color[2]),
         }
         return redirect('results')
     return render(request, 'picker.html', context)
