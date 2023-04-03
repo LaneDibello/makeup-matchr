@@ -9,8 +9,8 @@
 <div class="button-container">
   <div class = "card">
     <div class="uploaded-image">
-      {% if file_url %}
-        <img src="{{ file_url }}">
+      {% if img_b64 %}
+        <img src="data:image/png;base64,{{img_b64}}" height="80vh">
       {% endif %}
     </div>
     <div class="button-container">

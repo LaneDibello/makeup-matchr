@@ -15,7 +15,7 @@
     <form action="" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
         <label for="file" class="cam-btn">Upload Image</label>
-        <input type="file" accept="image/*" name="image" id="file" onchange="this.form.submit()"> 
+        <input type="file" accept="image/png, image/jpeg" name="image" id="file" onchange="this.form.submit()"> 
     </form>
   
     {% if file_url %}
