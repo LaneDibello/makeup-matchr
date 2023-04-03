@@ -53,6 +53,7 @@ def picker(request):
         'b': color[2],
         'file_url' : '../' + file_url,
     }
+    
     return render(request, 'picker.html', context)
 
 def test(request):
