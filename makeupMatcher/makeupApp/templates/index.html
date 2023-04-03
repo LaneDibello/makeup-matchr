@@ -22,8 +22,8 @@
     <form action="" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
         <label for="file" class="cam-btn">Upload Image</label>
-        <input type="file" accept="image/*" name="image" id="file" onchange="loadFile(event)">
-        <a href = "{% url 'index' %}"><button type="submit">submit</button></a>
+        <input type="file" accept="image/*" name="image" id="file" onchange="loadFile(event)" required>
+        <a href = "{% url 'corrected' %}"><button type="submit">submit</button></a>
     </form>
   
     {% if file_url %}

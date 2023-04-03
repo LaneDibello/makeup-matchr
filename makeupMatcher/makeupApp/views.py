@@ -1,31 +1,31 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from makeupApp.models import Product
 from django.core.files.storage import FileSystemStorage
 from makeupApp.utils.color_correction import CorrectImage
 from makeupApp.matches import Match
 from makeupApp.forms import InputForm
 from django.http import HttpResponse
-import re
-import os
+import re, os
 from PIL import Image
 
 brandChoices = Product.getBrands()
 
 def index(request):
     # CorrectImage('../makeupMatcher/media/figure3.jpg')
-    if request.method == 'POST':
-        upload = request.FILES['image']
-        fss = FileSystemStorage()
-        file = fss.save(upload.name, upload)
-        file_url = fss.url(file)
-        request.session['raw_image_url'] = file_url[1:]
-        correct_url = CorrectImage('../makeupMatcher/', file_url)
-        if correct_url == "": # image could not be corrected 
-            correct_url = '/media/empty.jpg' # insert empty image
-        request.session['image_url'] = correct_url
-        # with the file url read the image
-        return render(request, 'index.html', {'file_url' : correct_url})
-    return render(request, 'index.html')
+    if not request.method == 'POST':
+        return render(request, 'index.html')
+    
+    # save the image as a cookie
+    upload = request.FILES['image']
+    fss = FileSystemStorage()
+    file = fss.save(upload.name, upload)
+    file_url = fss.url(file)
+    request.session['raw_image_url'] = file_url[1:]
+    correct_url = CorrectImage('../makeupMatcher/', file_url)
+    if correct_url == "": # image could not be corrected 
+        correct_url = '/media/empty.jpg' # insert empty image
+    request.session['image_url'] = correct_url
+    return redirect('corrected')
 
 def about(request):
     return render(request, 'about.html')
@@ -39,6 +39,11 @@ def corrected(request):
     return render(request, 'corrected.html', context)
 
 def picker(request):
+
+    if not 'image_url' in request.session: # if there is no image redirect to index page
+        return redirect('index')
+
+    
     coords_s = request.META['QUERY_STRING']
     coords = [0,0]
     if (coords_s != ""): coords = list(map(int, re.findall(r'\d+', coords_s)))
@@ -54,6 +59,14 @@ def picker(request):
         'file_url' : '../' + file_url,
     }
     
+    # save the rgb values to make the query in the results page
+    if request.method == "POST":
+        request.session['color-values'] = {
+            'r' : color[0],
+            'g' : color[1],
+            'b' : color[2],
+        }
+        return redirect('results')
     return render(request, 'picker.html', context)
 
 def test(request):
@@ -66,16 +79,21 @@ def test(request):
     }
     return render(request, 'picker.html', context)
 
-
-
 def results(request):
     #delete the images after the resutls page
     delete_images(request)
-    match_results = Match(240, 184, 160)
+
+    if not 'color-values' in request.session: # if there is no color chosen redirect to picker
+        return redirect('picker')
+    
+    color = request.session['color-values']
+    match_results = Match(color['r'], color['g'] , color['b'])
+    # match_results = Match(240, 184, 160) This is the testing result
 
     context = {
         'match_results':match_results.getMatchesKNearest(100),
     }
+
     context['form'] = InputForm()
 
     if request.method == 'POST':
@@ -102,7 +120,6 @@ def results(request):
     return render(request, 'results.html', context)
 
 def delete_images(request):
-    ''' Delete the pictures of user when browser is closed '''
 
     # delete the raw user image
     if 'raw_image_url' in request.session:
