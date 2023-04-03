@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Makeup Matchr | Home{% endblock %}
+{% block title %}Makeup Matchr | Corrected{% endblock %}
 
 {% block content %}
 
@@ -13,8 +13,10 @@
         <img src="data:image/png;base64,{{img_b64}}" height="80vh">
       {% endif %}
     </div>
-    <a href="{% url 'index' %}"><input type="button" value="Reupload"></a>
-    <a href="{% url 'picker' %}"><input type="button" value="Confirm"></a>
+    <div class="button-container">
+      <a href="{% url 'index' %}"><input class = "cam-btn" type="button" value="Reupload"></a> 
+      <a href="{% url 'picker' %}"><input class = "cam-btn" type="button" value="Confirm"></a>
+    </div>
   </div>
 </div>
 
