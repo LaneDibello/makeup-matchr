@@ -1,13 +1,11 @@
 name: matchr
 channels:
-  - defaults
+  - conda-forge
+  - nodefaults
 dependencies:
   - django
   - numpy
-  - conda-forge::pathos
-  - pillow
-  - pip
-  - psycopg2
-  - python=3.10.9
-  - selenium
   - opencv
+  - pillow
+  - psycopg2
+  - python
