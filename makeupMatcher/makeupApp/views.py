@@ -21,14 +21,19 @@ def index(request):
     if img_raw.format == "JPEG":
         for orientation in ExifTags.TAGS.keys():
             if ExifTags.TAGS[orientation]=='Orientation' : break
-        exif=dict(img_raw._getexif().items())
-
-        if   exif[orientation] == 3 : 
-            img_raw=img_raw.rotate(180, expand=True)
-        elif exif[orientation] == 6 : 
-            img_raw=img_raw.rotate(270, expand=True)
-        elif exif[orientation] == 8 : 
-            img_raw=img_raw.rotate(90, expand=True)
+        
+        i_exif = img_raw._getexif()
+        if (i_exif is not None):
+            exif=dict(i_exif.items())
+            if exif is None:
+                print("Nonetype Exif")
+            elif (exif[orientation] is not None) and (exif[orientation] == 3) : 
+                img_raw=img_raw.rotate(180, expand=True)
+            elif (exif[orientation] is not None) and (exif[orientation] == 6) : 
+                img_raw=img_raw.rotate(270, expand=True)
+            elif (exif[orientation] is not None) and (exif[orientation] == 8) : 
+                img_raw=img_raw.rotate(90, expand=True)
+            
 
     img_raw = img_raw.convert('RGB')
     width, height = img_raw.size
@@ -46,9 +51,6 @@ def index(request):
     request.session['image'] = b64encode(img_buf.getvalue()).decode()
 
     return redirect('corrected')
-
-def about(request):
-    return render(request, 'about.html')
 
 def corrected(request):
     # get the corrected picture and pass it in the context
@@ -88,16 +90,6 @@ def picker(request):
             'b' : int(color[2]),
         }
         return redirect('results')
-    return render(request, 'picker.html', context)
-
-def test(request):
-    m = Match(197, 140, 133)
-    query_results = m.getMatchesKNearest(20, brandName='Lancome')
-    print(len(query_results))
-    context = {
-        'query_results':query_results,
-    
-    }
     return render(request, 'picker.html', context)
 
 def results(request):

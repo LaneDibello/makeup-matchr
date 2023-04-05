@@ -16,9 +16,8 @@
     background-color: #52489C;
 }
 
-.main_body {
+.main-body {
     background-color: #BBC2C4;
-    /* background-image: url(../assets/shock.jfif); */
 }
 
 .cam-btn {
@@ -58,6 +57,7 @@ h1 {
     align-items: center !important;
     text-align: center;
     min-width: 250px;
+    padding: 2%;
 }
 
 .header
@@ -73,17 +73,10 @@ h1 {
     width: 90%;
     color: #fff;
     position: absolute;
-    top: 50%;
+    top: 40%;
     left: 50%;
     transform: translate(-50%,-50%);
     text-align: center;
-}
-
-.title-box h2
-{
-    color: #fff;
-    white-space: nowrap;
-    font-size: 7.5vw;
 }
 
 .hero-btn
@@ -112,24 +105,39 @@ h1 {
     padding-top: 100px;
 }
 
+.abt-card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    align-items: center !important;
+    text-align: center;
+    min-width: 250px;
+    padding: 2%;
+    height: 450px;
+    background-color: #fff;
+    border-radius: 3%;
+}
+
 .about-row
 {
     margin: 5%;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .about-col
 {
-    flex-basis: 10%;
+    flex-basis: 5%;
     border-radius: 10px;
-    padding: 20px 12px;
+    padding: 10px 6px;
     box-sizing: border-box;
     transition: 0.5s;
 }
 
 .why-container {
-    width: 45%;
+    flex-basis: 50%;
+    padding: 20px 50px;
+    align-items: center;
 }
 
 /* LOADER */
@@ -157,4 +165,14 @@ h1 {
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+.nav-icon {
+    height: 100px;
+    width: 100px;
+}
+
+ul {
+    text-align: left;
+    padding-left: 10%;
 }
