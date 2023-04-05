@@ -16,12 +16,10 @@
     background-color: #52489C;
 }
 
-.main_body {
+.main-body {
     background-color: #BBC2C4;
-    /* background-image: url(../assets/shock.jfif); */
+    overflow: hidden; 
 }
-
-
 
 .cam-btn {
     border: 1px solid #000;
@@ -119,6 +117,7 @@ h1 {
     margin: 5%;
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 .about-col
