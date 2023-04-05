@@ -1,3 +1,4 @@
+from turtle import width
 from django.shortcuts import render, redirect
 from makeupApp.models import Product
 from makeupApp.utils.color_correction import CorrectImage
@@ -16,7 +17,11 @@ def index(request):
     if not request.method == 'POST':
         return render(request, 'index.html')
     
-    img_raw = Image.open(request.FILES['image']).convert('RGB') 
+    img_raw = Image.open(request.FILES['image']).convert('RGB')
+    # divide the width by 400 and mutiply that factor by height
+    width, height = img_raw.size
+    height = int(400 * (height/width))
+    img_raw = img_raw.resize((400, height))
     img = CorrectImage(img_raw)
 
     # Use raw image if color correction fails
