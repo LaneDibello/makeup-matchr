@@ -5,7 +5,7 @@ from makeupApp.matches import Match
 from makeupApp.forms import InputForm
 from django.http import HttpResponse
 import re, os
-from PIL import Image
+from PIL import Image, ExifTags
 from io import BytesIO
 import numpy as np
 from base64 import b64encode, b64decode
@@ -16,8 +16,21 @@ def index(request):
     if not request.method == 'POST':
         return render(request, 'index.html')
     
-    img_raw = Image.open(request.FILES['image']).convert('RGB')
-    # divide the width by 400 and mutiply that factor by height
+    img_raw = Image.open(request.FILES['image'])
+    
+    if img_raw.format == "JPEG":
+        for orientation in ExifTags.TAGS.keys():
+            if ExifTags.TAGS[orientation]=='Orientation' : break
+        exif=dict(img_raw._getexif().items())
+
+        if   exif[orientation] == 3 : 
+            img_raw=img_raw.rotate(180, expand=True)
+        elif exif[orientation] == 6 : 
+            img_raw=img_raw.rotate(270, expand=True)
+        elif exif[orientation] == 8 : 
+            img_raw=img_raw.rotate(90, expand=True)
+
+    img_raw = img_raw.convert('RGB')
     width, height = img_raw.size
     height = int(400 * (height/width))
     img_raw = img_raw.resize((400, height))
