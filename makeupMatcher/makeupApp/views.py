@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from makeupApp.models import Product
-from django.core.files.storage import FileSystemStorage
 from makeupApp.utils.color_correction import CorrectImage
 from makeupApp.matches import Match
 from makeupApp.forms import InputForm

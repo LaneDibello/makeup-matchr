@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Makeup Matchr | Home{% endblock %}
 
@@ -6,22 +7,113 @@
 
 <h1 class="visually-hidden">Upload Image</h1>
 
-<div class="button-container">
-  <div class = "card">
-    <div>
-      <img id="output" />
+<section class="header">
+
+  <div class="title-box">
+
+    <h2>Makeup Matchr</h2>
+
+    <form action="" method="POST" enctype="multipart/form-data" id="file-form">
+      {% csrf_token %}
+        <label for="file" class="hero-btn">Upload Image</label>
+        <input type="file" accept="image/png, image/jpeg" name="image" id="file" onchange=" document.getElementById('loader').style.display='inline'; document.getElementById('file-form').style.display='none'; this.form.submit()">
+    </form>
+
+    <div class="loader" id="loader"></div> 
+  </div>
+
+</section>
+
+<section class="aboutUs">
+ 
+  <h1>About Us</h1>
+
+  <h2>The Team</h2>
+
+  <div class="about-row">
+
+    <div class="about-col">
+      <div class="card">
+        <h3>
+          Bennett Carley
+        </h3>
+        <img class = "about-img" src= "{% static '../static/images/shock.jfif' %}">
+        <p>
+          Lorem ipsum
+        </p>
+      </div>
     </div>
 
-    <form action="" method="POST" enctype="multipart/form-data">
-      {% csrf_token %}
-        <label for="file" class="cam-btn">Upload Image</label>
-        <input type="file" accept="image/png, image/jpeg" name="image" id="file" onchange="this.form.submit()"> 
-    </form>
-  
-    {% if file_url %}
-      <img src="{{ file_url }}" alt="">
-    {% endif %}
-  </div>
-</div>
+    <div class="about-col">
+      <div class="card">
+        <h3>
+          Carlos Carrillo
+        </h3>
+        <img class = "about-img" src= "{% static '../static/images/shock.jfif' %}">
+        <p>
+          Lorem ipsum
+        </p>
+      </div>
+    </div>
 
+    <div class="about-col">
+      <div class="card">
+        <h3>
+          Mario Sandoval
+        </h3>
+        <img class = "about-img" src= "{% static '../static/images/shock.jfif' %}">
+        <p>
+          Lorem ipsum
+        </p>
+      </div>
+    </div>
+
+    <div class="about-col">
+      <div class="card">
+        <h3>
+          Michael Cadieux
+        </h3>
+        <img class = "about-img" src= "{% static '../static/images/shock.jfif' %}">
+        <p>
+          Lorem ipsum
+        </p>
+      </div>
+    </div>
+
+    <div class="about-col">
+      <div class="card">
+        <h3>
+          Lane Dibello
+        </h3>
+        <img class = "about-img" src= "{% static '../static/images/shock.jfif' %}">
+        <p>
+          Lorem ipsum
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <h2>What is Makeup Matchr</h2>
+
+  <div class="about-row">
+
+    <div class="why-container">
+      <div class = "card">
+        <p>
+            We made Makeup Matchr because it is incredibly difficult to find a matching foundation by traditional methods. The process of going to a makeup retailer, guessing which foundations may match your specific skin tone, and manually testing each one is very time consuming and inaccessible for some people. Our goal is to streamline the entire process of finding the correct foundation and take all of the guesswork out of this process.
+        </p>
+      </div>
+    </div>
+
+    <div class="why-container">
+      <div class = "card">
+        <p>
+            We made Makeup Matchr because it is incredibly difficult to find a matching foundation by traditional methods. The process of going to a makeup retailer, guessing which foundations may match your specific skin tone, and manually testing each one is very time consuming and inaccessible for some people. Our goal is to streamline the entire process of finding the correct foundation and take all of the guesswork out of this process.
+        </p>
+      </div>
+    </div>
+  </div>
+
+</section>
 {% endblock %}
