@@ -47,9 +47,6 @@ def index(request):
 
     return redirect('corrected')
 
-def about(request):
-    return render(request, 'about.html')
-
 def corrected(request):
     # get the corrected picture and pass it in the context
     img = request.session['image']
@@ -88,16 +85,6 @@ def picker(request):
             'b' : int(color[2]),
         }
         return redirect('results')
-    return render(request, 'picker.html', context)
-
-def test(request):
-    m = Match(197, 140, 133)
-    query_results = m.getMatchesKNearest(20, brandName='Lancome')
-    print(len(query_results))
-    context = {
-        'query_results':query_results,
-    
-    }
     return render(request, 'picker.html', context)
 
 def results(request):
