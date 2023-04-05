@@ -21,14 +21,19 @@ def index(request):
     if img_raw.format == "JPEG":
         for orientation in ExifTags.TAGS.keys():
             if ExifTags.TAGS[orientation]=='Orientation' : break
-        exif=dict(img_raw._getexif().items())
-
-        if   exif[orientation] == 3 : 
-            img_raw=img_raw.rotate(180, expand=True)
-        elif exif[orientation] == 6 : 
-            img_raw=img_raw.rotate(270, expand=True)
-        elif exif[orientation] == 8 : 
-            img_raw=img_raw.rotate(90, expand=True)
+        
+        i_exif = img_raw._getexif()
+        if (i_exif is not None):
+            exif=dict(i_exif.items())
+            if exif is None:
+                print("Nonetype Exif")
+            elif (exif[orientation] is not None) and (exif[orientation] == 3) : 
+                img_raw=img_raw.rotate(180, expand=True)
+            elif (exif[orientation] is not None) and (exif[orientation] == 6) : 
+                img_raw=img_raw.rotate(270, expand=True)
+            elif (exif[orientation] is not None) and (exif[orientation] == 8) : 
+                img_raw=img_raw.rotate(90, expand=True)
+            
 
     img_raw = img_raw.convert('RGB')
     width, height = img_raw.size
