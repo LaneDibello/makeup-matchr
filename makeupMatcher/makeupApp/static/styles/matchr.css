@@ -73,17 +73,10 @@ h1 {
     width: 90%;
     color: #fff;
     position: absolute;
-    top: 50%;
+    top: 40%;
     left: 50%;
     transform: translate(-50%,-50%);
     text-align: center;
-}
-
-.title-box h2
-{
-    color: #fff;
-    white-space: nowrap;
-    font-size: 7.5vw;
 }
 
 .hero-btn
@@ -110,6 +103,18 @@ h1 {
     margin: auto;
     text-align: center;
     padding-top: 100px;
+}
+
+.abt-card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    align-items: center !important;
+    text-align: center;
+    min-width: 250px;
+    padding: 2%;
+    height: 450px;
+    background-color: #fff;
+    border-radius: 3%;
 }
 
 .about-row
