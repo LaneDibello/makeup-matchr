@@ -67,7 +67,7 @@ def picker(request):
 
     coords_s = request.META['QUERY_STRING']
     coords = [0,0]
-    if (coords_s != ""): coords = list(map(int, re.findall(r'\d+', coords_s)))
+    if (coords_s != ""): coords = list(map(int, re.findall(r'\d+', coords_s)))[-2:]
 
     img_b64 = request.session['image']
     # im = Image.open('../makeupMatcher/' + file_url).load()
