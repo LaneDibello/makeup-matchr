@@ -33,7 +33,7 @@ conda deactivate
 conda env remove -n matchr
 ```
 ```
-conda env create -f enviornment.yml
+conda env create -f environment.yml
 ```
 ```
 conda activate matchr
