@@ -1,4 +1,3 @@
-from turtle import width
 from django.shortcuts import render, redirect
 from makeupApp.models import Product
 from makeupApp.utils.color_correction import CorrectImage
