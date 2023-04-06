@@ -21,18 +21,10 @@
 <body class="main-body">
     <header></header>
 
-    <div class="pg-primary">
-        {% include 'nav-bar.html' %}
-        {% block content %}{% endblock %}
-    </div>
-
-    <div class="container-fluid">
-        {% block secondary %}
-        {% endblock %}
-    </div>
+    {% block content %}
+    {% endblock %}
     
     <footer></footer>
-
 </body>
 
 </html>
