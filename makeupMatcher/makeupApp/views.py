@@ -27,11 +27,11 @@ def index(request):
             exif=dict(i_exif.items())
             if exif is None:
                 print("Nonetype Exif")
-            elif (exif[orientation] is not None) and (exif[orientation] == 3) : 
+            elif (orientation in exif) and (exif[orientation] == 3) : 
                 img_raw=img_raw.rotate(180, expand=True)
-            elif (exif[orientation] is not None) and (exif[orientation] == 6) : 
+            elif (orientation in exif) and (exif[orientation] == 6) : 
                 img_raw=img_raw.rotate(270, expand=True)
-            elif (exif[orientation] is not None) and (exif[orientation] == 8) : 
+            elif (orientation in exif) and (exif[orientation] == 8) : 
                 img_raw=img_raw.rotate(90, expand=True)
             
 
@@ -67,7 +67,7 @@ def picker(request):
 
     coords_s = request.META['QUERY_STRING']
     coords = [0,0]
-    if (coords_s != ""): coords = list(map(int, re.findall(r'\d+', coords_s)))
+    if (coords_s != ""): coords = list(map(int, re.findall(r'\d+', coords_s)))[-2:]
 
     img_b64 = request.session['image']
     # im = Image.open('../makeupMatcher/' + file_url).load()
