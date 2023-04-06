@@ -10,7 +10,7 @@
 <div class="button-container">
   <div class = "card">
     {% if img_b64 %}
-      <img src="data:image/png;base64,{{img_b64}}">
+      <img src="data:image/png;base64,{{img_b64}}" alt="Your Color Corrected Image">
     {% endif %}
     <div class="button-container">
       <a href="{% url 'index' %}"><input class = "cam-btn" type="button" value="Reupload"></a> 

@@ -9,18 +9,23 @@ brandChoices = Product.getBrands()
 
 # creating a form
 class InputForm(forms.Form):
+
+	# Form Creation for the lower price limit
 	priceL = forms.IntegerField(widget = forms.NumberInput
                     (attrs = {'class':'form-control',
 			                'placeholder':'Min',
 			                'aria-label':'Minimum price point'}),
 			     label = "Min",
 			     required = False)
+	
+	# Form Creation for the upper price limit
 	priceM = forms.IntegerField(widget = forms.NumberInput
                     (attrs = {'class':'form-control',
 			                'placeholder':'Max',
 			                'aria-label':'Maximum price point'}),
 			     label = "Max",
 			     required = False)
+	
 	# brandName = forms.CharField(max_length = 200,
 	# 		     widget = forms.TextInput
     #                 (attrs = {'class':'form-control',
@@ -28,6 +33,9 @@ class InputForm(forms.Form):
 	# 		                'aria-label':'Enter Brand Name'}),
 	# 		    label = "Brand",
 	# 		    required = False)
+
+	# Form Creation for the brandname drop down
+	# TODO: MAKE THIS COMPONENT PRETTY
 	brandName = forms.TypedChoiceField(
 					coerce = str,
 					choices = zip(range(len(brandChoices)), brandChoices),

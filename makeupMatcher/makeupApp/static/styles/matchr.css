@@ -1,6 +1,6 @@
 .navbar {
     background-color: #52489C;
-    color: white; 
+    color: white;
 }
 
 .navbar-brand {
@@ -30,8 +30,8 @@
     margin: 2px;
 }
 
-.cam-btn:hover{
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+.cam-btn:hover {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
 input[type="file"] {
@@ -49,7 +49,7 @@ h1 {
 
 .card {
     /* Add shadows to create the "card" effect */
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     transition: 0.3s;
     align-items: center !important;
     text-align: center;
@@ -67,18 +67,28 @@ h1 {
     margin-right: auto;
 }
 
-.btn-primary, .btn-primary:active, .btn-primary:visited {
+.mobile-centering {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.btn-primary,
+.btn-primary:active,
+.btn-primary:visited {
     background-color: white !important;
     color: #52489C !important;
 }
 
 .btn-primary:hover {
     background-color: #52489C !important;
-    color:white !important;
+    color: white !important;
 }
 
-.header
-{
+.header {
     position: relative;
     min-height: 100vh;
     width: 100%;
@@ -98,8 +108,7 @@ h1 {
     height: 15vh;
 }
 
-.aboutUs
-{
+.aboutUs {
     width: 100%;
     margin: auto;
     text-align: center;
@@ -107,7 +116,7 @@ h1 {
 }
 
 .abt-card {
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     transition: 0.3s;
     align-items: center !important;
     text-align: center;
@@ -123,16 +132,14 @@ h1 {
     border: 2px solid #000;
 }
 
-.about-row
-{
+.about-row {
     margin: 5%;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
 }
 
-.about-col
-{
+.about-col {
     flex-basis: 5%;
     border-radius: 10px;
     padding: 10px 6px;
@@ -149,8 +156,7 @@ h1 {
 }
 
 /* LOADER */
-.loader
-{
+.loader {
     display: none;
     margin-left: auto;
     margin-right: auto;
@@ -164,13 +170,23 @@ h1 {
 }
 
 @-webkit-keyframes spin {
-    0% { -webkit-transform: rotate(0deg); }
-    100% { -webkit-transform: rotate(360deg); }
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .nav-icon {
