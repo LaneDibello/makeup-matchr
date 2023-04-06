@@ -61,6 +61,14 @@ h1 {
     padding: 2%;
 }
 
+.pg-primary {
+    height: 100vh;
+    background-color: red;
+}
+
+.logo {
+    width: 60vmin;
+}
 .header
 {
     position: relative;

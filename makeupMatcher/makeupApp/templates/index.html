@@ -4,14 +4,8 @@
 {% block title %}Makeup Matchr | Home{% endblock %}
 
 {% block content %}
-
-<h1 class="visually-hidden">Upload Image</h1>
-
-<section class="header">
-
-  <div class="title-box">
-    <div>
-      <img src="{% static '../static/images/MakeupMatchrLogoExpanded.svg' %}" width="500">
+    <div class="logo">
+      <img src="{% static '../static/images/MakeupMatchrLogoExpanded.svg' %}">
     </div>
     <div>
       <form action="" method="POST" enctype="multipart/form-data" id="file-form">
@@ -21,10 +15,9 @@
       </form>
       <div class="loader" id="loader"></div> 
     </div>
-  </div>
+  {% endblock %}
 
-</section>
-
+{% block secondary %}
 <section class="aboutUs">
  
   <h1>About Makeup Matchr</h1>
