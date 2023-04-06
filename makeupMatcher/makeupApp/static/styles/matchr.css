@@ -27,6 +27,7 @@
     padding: 6px 12px;
     cursor: pointer;
     border-radius: 5px;
+    margin: 2px;
 }
 
 .cam-btn:hover{
@@ -112,9 +113,15 @@ h1 {
     text-align: center;
     min-width: 250px;
     padding: 2%;
-    height: 450px;
+    height: 550px;
     background-color: #fff;
     border-radius: 3%;
+}
+
+.about-img {
+    width: 200px;
+    border-radius: 4%;
+    border: 2px solid #000;
 }
 
 .about-row
@@ -175,4 +182,8 @@ h1 {
 ul {
     text-align: left;
     padding-left: 10%;
+}
+
+.explanation {
+    padding: 2% 30%;
 }
