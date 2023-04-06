@@ -4,20 +4,29 @@
 
 {% block content %}
 
-<h1>Corrected Image</h1>
+<h1>Color-Corrected Image</h1>
 
 <div class="button-container">
   <div class = "card">
-    <div class="uploaded-image">
-      {% if img_b64 %}
-        <img src="data:image/png;base64,{{img_b64}}">
-      {% endif %}
-    </div>
+    {% if img_b64 %}
+      <img src="data:image/png;base64,{{img_b64}}">
+    {% endif %}
     <div class="button-container">
       <a href="{% url 'index' %}"><input class = "cam-btn" type="button" value="Reupload"></a> 
       <a href="{% url 'picker' %}"><input class = "cam-btn" type="button" value="Confirm"></a>
     </div>
   </div>
+</div>
+
+<div class = "explanation">
+  <p>
+    This page shows the image you uploaded after it has been color corrected.
+    We do this in order to account for any differences in lighting, shadows, and other
+    issues with image consistency. 
+    <br>
+    If you are satisfied with this image,
+    click <strong>'Confirm'</strong> to select a color from this image to match to, or click <strong>'Reupload'</strong> to be brought back to the Home page
+  </p>
 </div>
 
 {% endblock %}
