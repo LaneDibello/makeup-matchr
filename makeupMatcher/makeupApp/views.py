@@ -23,11 +23,8 @@ def index(request):
             if ExifTags.TAGS[orientation]=='Orientation' : break
         
         i_exif = img_raw._getexif()
-        print(i_exif)
         if (i_exif is not None):
             exif=dict(i_exif.items())
-            print(exif)
-            print(orientation)
             if exif is None:
                 print("Nonetype Exif")
             elif (orientation in exif) and (exif[orientation] == 3) : 
