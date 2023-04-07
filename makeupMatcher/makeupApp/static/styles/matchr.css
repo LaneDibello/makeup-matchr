@@ -27,11 +27,14 @@
     padding: 6px 12px;
     cursor: pointer;
     border-radius: 5px;
-    margin: 2px;
+    margin: 1px 15px 6px ;
 }
 
 .cam-btn:hover{
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    background-color: transparent;
+    color:#000;
+    transition: 0.4s;
 }
 
 input[type="file"] {
@@ -48,7 +51,6 @@ h1 {
 }
 
 .card {
-    /* Add shadows to create the "card" effect */
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     transition: 0.3s;
     align-items: center !important;
@@ -94,7 +96,7 @@ h1 {
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
 
-.aboutUs
+.about-us
 {
     width: 100%;
     margin: auto;
@@ -182,4 +184,10 @@ ul {
 
 .explanation {
     padding: 2% 30%;
+}
+
+.upload {
+    margin: 30px 20px 5px;
+    border: 2px solid black;
+    border-radius: 2%;
 }
