@@ -10,9 +10,13 @@ from io import BytesIO
 import numpy as np
 from base64 import b64encode, b64decode
 
-brandChoices = Product.getBrands()
+brandChoices = Product.getBrands() # Grab a the list of brands targetted in the database for the filter drop down
 
 def index(request):
+    '''
+    Generates the necessary elements for the main `index.html` page\n
+    This primarily includes Image upload and handling, as well as passing to the color correction method
+    '''
     if not request.method == 'POST':
         return render(request, 'index.html')
     
@@ -27,11 +31,11 @@ def index(request):
             exif=dict(i_exif.items())
             if exif is None:
                 print("Nonetype Exif")
-            elif (exif[orientation] is not None) and (exif[orientation] == 3) : 
+            elif (orientation in exif) and (exif[orientation] == 3) : 
                 img_raw=img_raw.rotate(180, expand=True)
-            elif (exif[orientation] is not None) and (exif[orientation] == 6) : 
+            elif (orientation in exif) and (exif[orientation] == 6) : 
                 img_raw=img_raw.rotate(270, expand=True)
-            elif (exif[orientation] is not None) and (exif[orientation] == 8) : 
+            elif (orientation in exif) and (exif[orientation] == 8) : 
                 img_raw=img_raw.rotate(90, expand=True)
             
 
@@ -53,6 +57,9 @@ def index(request):
     return redirect('corrected')
 
 def corrected(request):
+    '''
+    Passes the color corrected image into the `corrected.html` page
+    '''
     # get the corrected picture and pass it in the context
     img = request.session['image']
     context = {
@@ -62,20 +69,24 @@ def corrected(request):
     return render(request, 'corrected.html', context)
 
 def picker(request):
+    '''
+    Passes the color corrected image into the `picker.html` page\n
+    Obtains the selected image coordinates from the ismap element, and passes the associated color to the page.
+    '''
     if not 'image' in request.session: # if there is no image redirect to index page
         return redirect('index')
 
     coords_s = request.META['QUERY_STRING']
     coords = [0,0]
-    if (coords_s != ""): coords = list(map(int, re.findall(r'\d+', coords_s)))
+    if (coords_s != ""): coords = list(map(int, re.findall(r'\d+', coords_s)))[-2:]
 
     img_b64 = request.session['image']
     # im = Image.open('../makeupMatcher/' + file_url).load()
     im = np.array(Image.open(BytesIO(b64decode(img_b64))))
     color = im[coords[1], coords[0]]
     context = {
-        'x': coords[0],
-        'y': coords[1],
+        #'x': coords[0],
+        #'y': coords[1],
         'r': int(color[0]),
         'g': int(color[1]),
         'b': int(color[2]),
@@ -93,6 +104,11 @@ def picker(request):
     return render(request, 'picker.html', context)
 
 def results(request):
+    '''
+    Passes the selected color into the `results.html` page\n
+    Grabs 100 nearest matches to the provided color \n
+    Handles posted filtering specs from the forms, and filters results with these options\n
+    '''
     #delete the images after the results page
     delete_images(request)
 
@@ -133,7 +149,9 @@ def results(request):
     return render(request, 'results.html', context)
 
 def delete_images(request):
-
+    '''
+    Disposes of the user's uploaded and corrected images
+    '''
     # delete the raw user image
     if 'raw_image_url' in request.session:
         if os.path.exists(request.session['raw_image_url']):

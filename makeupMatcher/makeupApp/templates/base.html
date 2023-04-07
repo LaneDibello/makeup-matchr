@@ -1,6 +1,9 @@
-<html>
+<!DOCTYPE html>
+<html lang="en-US">
 
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{% endblock %}</title>
     {% load static %}
 
@@ -34,14 +37,10 @@
 <body class="main-body">
     <header></header>
 
-    {% include 'nav-bar.html' %}
-
     {% block content %}
-
     {% endblock %}
-
+    
     <footer></footer>
-
 </body>
 
 </html>
