@@ -55,7 +55,7 @@
                     {{item.brand}}
                 </td>
                 <td>
-                    <strong>${{item.price}}</strong>
+                    <strong>${{item.price|stringformat:".2f"}}</strong>
                 </td>
             </tr>
             {% endfor %}
