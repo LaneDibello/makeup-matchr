@@ -33,11 +33,11 @@
 
 <h1>Color-Corrected Image</h1>
 
-<div class="button-container">
+<div class="corrected-container">
   <button type="button" class="cam-btn" data-toggle="modal" data-target="#exampleModal">
     Instructions
   </button>
-  <div class = "card">
+  <div class = "corrected-card">
     {% if img_b64 %}
       <img class = "upload" src="data:image/png;base64,{{img_b64}}" alt="uploaded and corrected image">
     {% endif %}
