@@ -11,29 +11,46 @@
     <link rel="stylesheet" href="{% static '../static/styles/picker.css' %}" />
 {% endblock %}
 
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Color Picker Instructions</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          This page contains an embedded color picker that alters the color of the card under your image. 
+          Click anywhere on the image to change your selected color, which will update the card. 
+          <br><br>
+          Once you are satisfied with your selected color, click <strong>'Submit'</strong> to see your results.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="cam-btn" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <h1>Skin Tone Selection</h1>
 
 <div class = "button-container">
+  <button type="button" class="cam-btn" data-toggle="modal" data-target="#exampleModal">
+    Instructions
+  </button>
   <div class = "card" style="background-color: rgb({{r}},{{g}},{{b}});">
     <a href="">
-      <img src="data:image/png;base64,{{img_b64}}" alt="uploaded and corrected image to pick color from" ismap="">
+      <img class = "upload" src="data:image/png;base64,{{img_b64}}" alt="uploaded and corrected image to pick color from" ismap="">
     </a>
     <br>
     <form action="" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
-      <button class="cam-btn" type="submit">Submit</button>
+      <a class="cam-btn" type="submit">Submit</a>
     </form>
   </div>
 </div>
-
-<div class = "explanation">
-  <p>
-    This page contains an embedded color picker that alters the color of the card under your image. 
-    Click anywhere on the image to change your selected color, which will update the card. 
-    <br>
-    Once you are satisfied with your selected color, click <strong>'Submit'</strong> to see your results.
-  </p>
-</div>
-
 
 {% endblock %}
