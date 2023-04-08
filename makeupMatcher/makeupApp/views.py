@@ -38,7 +38,7 @@ def index(request):
             elif (orientation in exif) and (exif[orientation] == 8) : 
                 img_raw=img_raw.rotate(90, expand=True)
             
-
+    scale_factor = 0.8
     img_raw = img_raw.convert('RGB')
     width, height = img_raw.size
     height = int(400 * (height/width))
@@ -127,37 +127,36 @@ def results(request):
 
     if request.method == 'POST':
         form = InputForm(request.POST)
+
         if form.is_valid():
-            priceL = request.POST.get('priceL')
-            priceM = request.POST.get('priceM')
-            brandidx = request.POST.get('brandName')
-            print("Brand Idx: ", brandidx)
-            brandName = brandChoices[int(brandidx)]
-            print("Brand Name: ", brandName)
+            if 'reset' in request.POST:
+                priceL = 0
+                priceM = 0
+                brand_idx = 0
+            else:
+                priceL = form.data['priceL']
+                priceM = form.data['priceM']
+                brand_idx = form.data['brandName']
+            
             if not priceL:
                 priceL = 0
+
             if not priceM:
                 priceM = float('inf')
-            if not brandName:
-                brandName = ""
+
+            if not brand_idx:
+                brand_idx = 0
+
+            brandName = brandChoices[int(brand_idx)]
 
             context = {
-                    'match_results':match_results.getMatchesKNearest(100, priceL, priceM, brandName),
-                }
+                'match_results': match_results.getMatchesKNearest(100, priceL, priceM, brandName),
+            }
             
-            context['form'] = InputForm(request.POST)
+            if 'reset' in request.POST:
+                context['form'] = InputForm()
+            else:
+                context['form'] = InputForm(request.POST)
+    
     return render(request, 'results.html', context)
 
-def delete_images(request):
-    '''
-    Disposes of the user's uploaded and corrected images
-    '''
-    # delete the raw user image
-    if 'raw_image_url' in request.session:
-        if os.path.exists(request.session['raw_image_url']):
-            os.remove(request.session['raw_image_url'])
-    #check for corrected image  and delete it
-    if 'image_url' in request.session:
-        if os.path.exists(request.session['image_url']):
-            os.remove(request.session['image_url'])
-    return HttpResponse('SUCCESS FROM PYTHON')
