@@ -219,3 +219,25 @@ ul {
     border: 2px solid black;
     border-radius: 2%;
 }
+
+.corrected-card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    align-items: center !important;
+    text-align: center;
+    width: 100%;
+    padding: 2%;
+    background-color: #fff;
+    border-radius: 3%;
+}
+
+.corrected-container {
+    padding: 2% 17.5%;
+    text-align: center;
+}
+
+@media (max-width: 1000px) {
+    .corrected-container {
+        padding: 0%;
+    }
+}

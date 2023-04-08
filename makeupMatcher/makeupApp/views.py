@@ -38,11 +38,14 @@ def index(request):
             elif (orientation in exif) and (exif[orientation] == 8) : 
                 img_raw=img_raw.rotate(90, expand=True)
             
-
+    scale_factor = 0.8
     img_raw = img_raw.convert('RGB')
     width, height = img_raw.size
-    height = int(400 * (height/width))
-    img_raw = img_raw.resize((400, height))
+    # height = int(400 * (height/width))
+    # img_raw = img_raw.resize((400, height))
+    width = int(width * scale_factor)
+    height = int(height * scale_factor) 
+    img_raw = img_raw.resize((width, height))
     img = CorrectImage(img_raw)
 
     # Use raw image if color correction fails

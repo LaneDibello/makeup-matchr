@@ -33,19 +33,19 @@
 </div>
 
 <div class = "result-field">
-        {% for item in match_results %}
-            <div class = "result-card result-info" style = "border: 15px solid rgb({{item.red}},{{item.green}},{{item.blue}});">
-                <div>
-                    <h2>{{ item.name }}</h2>
-                    <p>Brand: {{ item.brand }}</p>
-                    <p>Color Code: {{ item.colorcode }}</p>
-                    <p>Price: ${{ item.price|floatformat:"2" }}</p>
-                </div>
-                <div>
-                    <a href="{{ item.url }}" target="_blank"><button class = "cam-btn">Purchase</button></a>
-                </div>
+    {% for item in match_results %}
+        <div class = "result-card result-info" style = "border: 15px solid rgb({{item.red}},{{item.green}},{{item.blue}});">
+            <div>
+                <h2>{{ item.name }}</h2>
+                <p>Brand: {{ item.brand }}</p>
+                <p>Color Code: {{ item.colorcode }}</p>
+                <p>Price: ${{ item.price|floatformat:"2" }}</p>
             </div>
-        {% endfor %}
+            <div>
+                <a href="{{ item.url }}" target="_blank"><button class = "cam-btn">Purchase</button></a>
+            </div>
+        </div>
+    {% endfor %}
 </div>
 
 {% endblock %}
