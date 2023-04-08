@@ -13,17 +13,17 @@ class InputForm(forms.Form):
 	# Form Creation for the lower price limit
 	priceL = forms.IntegerField(widget = forms.NumberInput
                     (attrs = {'class':'form-control',
-			                'placeholder':'Min',
+			                'placeholder':'Ex. 14',
 			                'aria-label':'Minimum price point'}),
-			     label = "Min",
+			     label = "Min Price",
 			     required = False)
 	
 	# Form Creation for the upper price limit
 	priceM = forms.IntegerField(widget = forms.NumberInput
                     (attrs = {'class':'form-control',
-			                'placeholder':'Max',
+			                'placeholder':'Ex. 50',
 			                'aria-label':'Maximum price point'}),
-			     label = "Max",
+			     label = "Max Price",
 			     required = False)
 	
 	# brandName = forms.CharField(max_length = 200,

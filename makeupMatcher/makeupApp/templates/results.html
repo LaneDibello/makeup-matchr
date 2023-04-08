@@ -10,7 +10,7 @@
 {% block content %}
 {% include 'nav-bar.html' %}
 
-<h1>Results Page</h1>
+<h1>Your Results</h1>
 
 <div class="row" id="filterPadding">
     <div class="col-8"></div>
@@ -24,42 +24,30 @@
                 <form action="" method="post">
                     {% csrf_token %}
                     {{form.as_ul}}
-                    <input type="submit" value=submit>
-                    <input type="submit" value="reset" name="reset"/>
+
+                    <input class = "cam-btn" type="submit" value=submit>
+                    <input class = "cam-btn" type="submit" value="reset" name="reset"/>
+
                 </form>
             </ul>
         </div>
     </div>
 </div>
 
-<div id="tablePadding">
-    <div class="table-responsive">
-        <table class="table table-dark table-striped table-hover" id="table" data-url="json/data1.json"
-            data-filter-control="true" data-show-search-clear-button="true">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Brand</th>
-                    <th scope="col">Colorcode</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Purchase Link</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in match_results %}
-                <tr>
-                    <th scope="row" class="counterCell"></th>
-                    <td>{{ item.name }}</td>
-                    <td>{{ item.brand }}</td>
-                    <td>{{ item.colorcode }}</td>
-                    <td>${{ item.price|floatformat:"2" }}</td>
-                    <td><a href="{{ item.url }}" target="_blank">Product purchase link</a></td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+<div class = "result-field">
+        {% for item in match_results %}
+            <div class = "result-card result-info" style = "border: 15px solid rgb({{item.red}},{{item.green}},{{item.blue}});">
+                <div>
+                    <h2>{{ item.name }}</h2>
+                    <p>Brand: {{ item.brand }}</p>
+                    <p>Color Code: {{ item.colorcode }}</p>
+                    <p>Price: ${{ item.price|floatformat:"2" }}</p>
+                </div>
+                <div>
+                    <a href="{{ item.url }}" target="_blank"><button class = "cam-btn">Purchase</button></a>
+                </div>
+            </div>
+        {% endfor %}
 </div>
 
 {% endblock %}
