@@ -92,6 +92,20 @@ h1 {
     color: white !important;
 }
 
+.btn-secondary,
+.btn-secondary:active,
+.btn-secondary:visited {
+    border-color: transparent;
+    background-color: #52489C !important;
+    color: white !important;
+}
+
+.btn-secondary:hover {
+    border-color: #52489C;
+    background-color: white !important;
+    color: #52489C !important;
+}
+
 .header {
     position: relative;
     min-height: 100vh;
@@ -205,4 +219,27 @@ ul {
 
 .explanation {
     padding: 2% 30%;
+}
+
+.box {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+}
+
+.tbl-head {
+    background-color: white;
+    color: black;
+}
+
+.tbl-body,
+.tbl-body:active,
+.tbl-body:visited {
+    background-color: white;
+    color: black;
+}
+
+.tbl-body:hover {
+    background-color: #52489C;
+    color: white;
 }
