@@ -109,8 +109,6 @@ def results(request):
     Grabs 100 nearest matches to the provided color \n
     Handles posted filtering specs from the forms, and filters results with these options\n
     '''
-    #delete the images after the results page
-    delete_images(request)
 
     if not 'color-values' in request.session: # if there is no color chosen redirect to picker
         return redirect('picker')
