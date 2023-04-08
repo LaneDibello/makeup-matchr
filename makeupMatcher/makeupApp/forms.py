@@ -37,6 +37,10 @@ class InputForm(forms.Form):
 	# Form Creation for the brandname drop down
 	# TODO: MAKE THIS COMPONENT PRETTY
 	brandName = forms.TypedChoiceField(
+					# widget = forms.NumberInput
+					# 	(attrs = {'class':'form-control',
+					# 			'placeholder':'Ex. 50',
+					# 			'aria-label':'Maximum price point'}),
 					coerce = str,
 					choices = zip(range(len(brandChoices)), brandChoices),
 				    label = "Brand",
