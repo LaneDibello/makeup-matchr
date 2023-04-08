@@ -148,16 +148,3 @@ def results(request):
             context['form'] = InputForm(request.POST)
     return render(request, 'results.html', context)
 
-def delete_images(request):
-    '''
-    Disposes of the user's uploaded and corrected images
-    '''
-    # delete the raw user image
-    if 'raw_image_url' in request.session:
-        if os.path.exists(request.session['raw_image_url']):
-            os.remove(request.session['raw_image_url'])
-    #check for corrected image  and delete it
-    if 'image_url' in request.session:
-        if os.path.exists(request.session['image_url']):
-            os.remove(request.session['image_url'])
-    return HttpResponse('SUCCESS FROM PYTHON')
