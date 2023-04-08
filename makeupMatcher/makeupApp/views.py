@@ -127,25 +127,37 @@ def results(request):
 
     if request.method == 'POST':
         form = InputForm(request.POST)
+
         if form.is_valid():
-            priceL = request.POST.get('priceL')
-            priceM = request.POST.get('priceM')
-            brandidx = request.POST.get('brandName')
-            print("Brand Idx: ", brandidx)
-            brandName = brandChoices[int(brandidx)]
-            print("Brand Name: ", brandName)
+            if 'reset' in request.POST:
+                priceL = 0
+                priceM = 0
+                brand_idx = 0
+            else:
+                priceL = form.data['priceL']
+                priceM = form.data['priceM']
+                brand_idx = form.data['brandName']
+            
             if not priceL:
                 priceL = 0
+
             if not priceM:
                 priceM = float('inf')
-            if not brandName:
-                brandName = ""
+
+            if not brand_idx:
+                brand_idx = 0
+
+            brandName = brandChoices[int(brand_idx)]
 
             context = {
-                    'match_results':match_results.getMatchesKNearest(100, priceL, priceM, brandName),
-                }
+                'match_results': match_results.getMatchesKNearest(100, priceL, priceM, brandName),
+            }
             
-            context['form'] = InputForm(request.POST)
+            if 'reset' in request.POST:
+                context['form'] = InputForm()
+            else:
+                context['form'] = InputForm(request.POST)
+    
     return render(request, 'results.html', context)
 
 def delete_images(request):
