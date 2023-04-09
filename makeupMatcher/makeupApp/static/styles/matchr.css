@@ -232,11 +232,11 @@ ul {
 }
 
 .corrected-container {
-    padding: 2% 20%;
+    padding: 2% 25%;
     text-align: center;
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 800px) {
     .corrected-container {
         padding: 0%;
     }
