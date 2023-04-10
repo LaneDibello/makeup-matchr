@@ -38,11 +38,10 @@ def index(request):
             elif (orientation in exif) and (exif[orientation] == 8) : 
                 img_raw=img_raw.rotate(90, expand=True)
             
-
     img_raw = img_raw.convert('RGB')
     width, height = img_raw.size
-    height = int(400 * (height/width))
-    img_raw = img_raw.resize((400, height))
+    height = int(300 * (height/width))
+    img_raw = img_raw.resize((300, height))
     img = CorrectImage(img_raw)
 
     # Use raw image if color correction fails
@@ -109,8 +108,6 @@ def results(request):
     Grabs 100 nearest matches to the provided color \n
     Handles posted filtering specs from the forms, and filters results with these options\n
     '''
-    #delete the images after the results page
-    delete_images(request)
 
     if not 'color-values' in request.session: # if there is no color chosen redirect to picker
         return redirect('picker')
@@ -127,24 +124,36 @@ def results(request):
 
     if request.method == 'POST':
         form = InputForm(request.POST)
+
         if form.is_valid():
-            priceL = request.POST.get('priceL')
-            priceM = request.POST.get('priceM')
-            brandidx = request.POST.get('brandName')
-            print("Brand Idx: ", brandidx)
-            brandName = brandChoices[int(brandidx)]
-            print("Brand Name: ", brandName)
+            if 'reset' in request.POST:
+                priceL = 0
+                priceM = 0
+                brand_idx = 0
+            else:
+                priceL = form.data['priceL']
+                priceM = form.data['priceM']
+                brand_idx = form.data['brandName']
+            
             if not priceL:
                 priceL = 0
+
             if not priceM:
                 priceM = float('inf')
-            if not brandName:
-                brandName = ""
+
+            if not brand_idx:
+                brand_idx = 0
+
+            brandName = brandChoices[int(brand_idx)]
 
             context = {
-                    'match_results':match_results.getMatchesKNearest(100, priceL, priceM, brandName),
-                }
+                'match_results': match_results.getMatchesKNearest(100, priceL, priceM, brandName),
+            }
             
-            context['form'] = InputForm(request.POST)
+            if 'reset' in request.POST:
+                context['form'] = InputForm()
+            else:
+                context['form'] = InputForm(request.POST)
+    
     return render(request, 'results.html', context)
 

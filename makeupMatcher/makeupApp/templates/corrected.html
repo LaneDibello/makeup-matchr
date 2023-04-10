@@ -5,29 +5,47 @@
 {% block content %}
 {% include 'nav-bar.html' %}
 
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Color-Corrected Instructions</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          This page shows the image you uploaded after it has been color corrected.
+          We do this in order to account for any differences in lighting, shadows, and other
+          issues with image consistency. 
+          <br><br>
+          If you are satisfied with this image,
+          click <strong>'Confirm'</strong> to select a color from this image to match to, or click <strong>'Reupload'</strong> to be brought back to the Home page
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="cam-btn" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <h1>Color-Corrected Image</h1>
 
-<div class="button-container">
-  <div class = "card">
+<div class="corrected-container">
+  <button type="button" class="cam-btn" data-toggle="modal" data-target="#exampleModal">
+    Instructions
+  </button>
+  <div class = "corrected-card">
     {% if img_b64 %}
-      <img src="data:image/png;base64,{{img_b64}}" alt="Your Color Corrected Image">
+      <img class = "upload" src="data:image/png;base64,{{img_b64}}" alt="uploaded and corrected image">
     {% endif %}
     <div class="button-container">
       <a href="{% url 'index' %}"><input class = "cam-btn" type="button" value="Reupload"></a> 
       <a href="{% url 'picker' %}"><input class = "cam-btn" type="button" value="Confirm"></a>
     </div>
   </div>
-</div>
-
-<div class = "explanation">
-  <p>
-    This page shows the image you uploaded after it has been color corrected.
-    We do this in order to account for any differences in lighting, shadows, and other
-    issues with image consistency. 
-    <br>
-    If you are satisfied with this image,
-    click <strong>'Confirm'</strong> to select a color from this image to match to, or click <strong>'Reupload'</strong> to be brought back to the Home page
-  </p>
 </div>
 
 {% endblock %}
