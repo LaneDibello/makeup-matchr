@@ -9,3 +9,4 @@ dependencies:
   - pillow
   - psycopg2
   - python
+  - whitenoise
