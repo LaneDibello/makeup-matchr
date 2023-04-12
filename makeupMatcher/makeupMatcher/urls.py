@@ -25,4 +25,4 @@ urlpatterns = [
     path('results/', views.results, name="results"),
     path('picker/', views.picker, name="picker"),
     path('corrected/', views.corrected, name="corrected"),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
