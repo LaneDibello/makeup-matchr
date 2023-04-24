@@ -53,7 +53,7 @@ def index(request):
     img.save(img_buf, format="JPEG")
     request.session['image'] = b64encode(img_buf.getvalue()).decode()
 
-    return redirect('corrected')
+    return redirect('picker')
 
 def corrected(request):
     '''
@@ -108,7 +108,7 @@ def results(request):
     Grabs 100 nearest matches to the provided color \n
     Handles posted filtering specs from the forms, and filters results with these options\n
     '''
-
+    MATCHES = 10
     if not 'color-values' in request.session: # if there is no color chosen redirect to picker
         return redirect('picker')
     
@@ -117,7 +117,7 @@ def results(request):
     # match_results = Match(240, 184, 160) This is the testing result
 
     context = {
-        'match_results':match_results.getMatchesKNearest(100),
+        'match_results':match_results.getMatchesKNearest(MATCHES),
     }
 
     context['form'] = InputForm()
@@ -147,7 +147,7 @@ def results(request):
             brandName = brandChoices[int(brand_idx)]
 
             context = {
-                'match_results': match_results.getMatchesKNearest(100, priceL, priceM, brandName),
+                'match_results': match_results.getMatchesKNearest(MATCHES, priceL, priceM, brandName),
             }
             
             if 'reset' in request.POST:

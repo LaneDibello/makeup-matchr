@@ -25,8 +25,8 @@
                     {% csrf_token %}
                     {{form.as_ul}}
 
-                    <input class = "cam-btn" type="submit" value=submit>
-                    <input class = "cam-btn" type="submit" value="reset" name="reset"/>
+                    <input class = "cam-btn" type="Submit" value="Reset" name="Reset"/>
+                    <input class = "cam-btn" type="Submit" value="Submit">
 
                 </form>
             </ul>
@@ -44,7 +44,7 @@
                 <p>Price: ${{ item.price|floatformat:"2" }}</p>
             </div>
             <div>
-                <a href="{{ item.url }}" target="_blank"><button class = "cam-btn">Purchase</button></a>
+                <a href="{{ item.url }}" target="_blank"><button class = "cam-btn">View Product</button></a>
             </div>
         </div>
     {% endfor %}
