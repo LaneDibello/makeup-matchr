@@ -43,7 +43,7 @@ python manage.py runserver 0:80
 ## Expanding the Database
 - The database requires fields to be filled as according to the schema specified above.
 - Assuming your own database is attached to the service, the following fields and types are required as specified below on a table titled “products”:
-- (IMAGE HERE)
+![Database Table Schema](DB.PNG)
 - This will function with the Django models employed by the repository.
 - To expand this database, I’d recommend collecting the cosmetics products from the vendor in question into a tab separated variable listing (TSV), following the database schema. Such a file could be imported to postgres as follows:
 ```
