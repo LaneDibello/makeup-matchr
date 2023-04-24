@@ -75,9 +75,15 @@ def picker(request):
     if not 'image' in request.session: # if there is no image redirect to index page
         return redirect('index')
 
+
     coords_s = request.META['QUERY_STRING']
     coords = [0,0]
     if (coords_s != ""): coords = list(map(int, re.findall(r'\d+', coords_s)))[-2:]
+
+    if (coords == [0,0]):
+        init = False
+    else:
+        init = True
 
     img_b64 = request.session['image']
     # im = Image.open('../makeupMatcher/' + file_url).load()
@@ -90,6 +96,7 @@ def picker(request):
         'g': int(color[1]),
         'b': int(color[2]),
         'img_b64' : img_b64,
+        'init' : init,
     }
     
     # save the rgb values to make the query in the results page
