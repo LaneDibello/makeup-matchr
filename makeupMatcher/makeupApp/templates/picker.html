@@ -35,7 +35,7 @@
   </div>
 </div>
 
-<h1>Skin Tone Selection</h1>
+<h1>Click Your Skin Tone To Match!</h1>
 
 <div class = "corrected-container">
   <button type="button" class="cam-btn" data-toggle="modal" data-target="#exampleModal">
@@ -48,7 +48,12 @@
     <br>
     <form action="" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
-      <button class="cam-btn" type="submit">Submit</button>
+      <a href="{% url 'index' %}"><input class = "cam-btn" type="button" value="Reupload"></a> 
+      {% if init %}
+        <button class="cam-btn " type="submit" name="submit-picker">Submit</button>
+      {% else %}
+        <button class="cam-btn" type="submit" name="submit-picker" disabled>Submit</button>
+      {% endif %}
     </form>
   </div>
 </div>

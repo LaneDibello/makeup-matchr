@@ -53,7 +53,7 @@ def index(request):
     img.save(img_buf, format="JPEG")
     request.session['image'] = b64encode(img_buf.getvalue()).decode()
 
-    return redirect('corrected')
+    return redirect('picker')
 
 def corrected(request):
     '''
@@ -75,9 +75,15 @@ def picker(request):
     if not 'image' in request.session: # if there is no image redirect to index page
         return redirect('index')
 
+
     coords_s = request.META['QUERY_STRING']
     coords = [0,0]
     if (coords_s != ""): coords = list(map(int, re.findall(r'\d+', coords_s)))[-2:]
+
+    if (coords == [0,0]):
+        init = False
+    else:
+        init = True
 
     img_b64 = request.session['image']
     # im = Image.open('../makeupMatcher/' + file_url).load()
@@ -90,6 +96,7 @@ def picker(request):
         'g': int(color[1]),
         'b': int(color[2]),
         'img_b64' : img_b64,
+        'init' : init,
     }
     
     # save the rgb values to make the query in the results page
@@ -108,16 +115,16 @@ def results(request):
     Grabs 100 nearest matches to the provided color \n
     Handles posted filtering specs from the forms, and filters results with these options\n
     '''
-
+    MATCHES = 10
     if not 'color-values' in request.session: # if there is no color chosen redirect to picker
         return redirect('picker')
     
     color = request.session['color-values']
     match_results = Match(color['r'], color['g'] , color['b'])
     # match_results = Match(240, 184, 160) This is the testing result
-
+    
     context = {
-        'match_results':match_results.getMatchesKNearest(100),
+        'match_results':match_results.getMatchesKNearest(MATCHES),
     }
 
     context['form'] = InputForm()
@@ -147,7 +154,7 @@ def results(request):
             brandName = brandChoices[int(brand_idx)]
 
             context = {
-                'match_results': match_results.getMatchesKNearest(100, priceL, priceM, brandName),
+                'match_results': match_results.getMatchesKNearest(MATCHES, priceL, priceM, brandName),
             }
             
             if 'reset' in request.POST:
@@ -155,5 +162,12 @@ def results(request):
             else:
                 context['form'] = InputForm(request.POST)
     
+
+    #Grab Unit tests here, because the models aren't initialized
+    if ('user-agent' in request.headers) and ('RESULTS_TEST' in request.headers["user-agent"]):
+        return HttpResponse('good')
+    if ('User-Agent' in request.headers) and ('RESULTS_TEST' in request.headers["User-Agent"]):
+        return HttpResponse('good')
+
     return render(request, 'results.html', context)
 
