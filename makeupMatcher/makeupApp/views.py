@@ -4,7 +4,7 @@ from io import BytesIO
 
 import numpy as np
 from django.http import HttpResponse
-from django.shortcuts import redirect, render, render_to_response
+from django.shortcuts import redirect, render
 from django.template.context_processors import csrf
 from makeupApp.forms import InputForm
 from makeupApp.matches import Match
@@ -24,7 +24,7 @@ def index(request):
     c = csrf(request)
 
     if not request.method == 'POST':
-        return render_to_response(request, 'index.html', c)
+        return render(request, 'index.html', c)
 
     img_raw = Image.open(request.FILES['image'])
     
