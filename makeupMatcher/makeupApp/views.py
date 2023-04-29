@@ -54,7 +54,8 @@ def index(request):
     img_buf = BytesIO()
     img.save(img_buf, format="JPEG")
     request.session['image'] = b64encode(img_buf.getvalue()).decode()
-
+    for key, value in request.session.items(): print (f'{key} => {value}')
+    
     print('To picker')
     return redirect('picker')
 
