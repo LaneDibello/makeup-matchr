@@ -19,12 +19,8 @@ def index(request):
     Generates the necessary elements for the main `index.html` page\n
     This primarily includes Image upload and handling, as well as passing to the color correction method
     '''
-
-    # Generate CSRF token
-    c = csrf(request)
-
     if not request.method == 'POST':
-        return render(request, 'index.html', c)
+        return render(request, 'index.html')
 
     img_raw = Image.open(request.FILES['image'])
     
