@@ -1,25 +1,31 @@
-from django.shortcuts import render, redirect
+import re
+from base64 import b64decode, b64encode
+from io import BytesIO
+
+import numpy as np
+from django.http import HttpResponse
+from django.shortcuts import redirect, render, render_to_response
+from django.template.context_processors import csrf
+from makeupApp.forms import InputForm
+from makeupApp.matches import Match
 from makeupApp.models import Product
 from makeupApp.utils.color_correction import CorrectImage
-from makeupApp.matches import Match
-from makeupApp.forms import InputForm
-from django.http import HttpResponse
-import re, os
-from PIL import Image, ExifTags
-from io import BytesIO
-import numpy as np
-from base64 import b64encode, b64decode
+from PIL import ExifTags, Image
 
-brandChoices = Product.getBrands() # Grab a the list of brands targetted in the database for the filter drop down
+brandChoices = Product.getBrands() # Grab a the list of brands targeted in the database for the filter drop down
 
 def index(request):
     '''
     Generates the necessary elements for the main `index.html` page\n
     This primarily includes Image upload and handling, as well as passing to the color correction method
     '''
+
+    # Generate CSRF token
+    c = csrf(request)
+
     if not request.method == 'POST':
-        return render(request, 'index.html')
-    
+        return render_to_response(request, 'index.html', c)
+
     img_raw = Image.open(request.FILES['image'])
     
     if img_raw.format == "JPEG":
@@ -96,7 +102,7 @@ def picker(request):
         'g': int(color[1]),
         'b': int(color[2]),
         'img_b64' : img_b64,
-        'init' : init,
+        'init' : init
     }
     
     # save the rgb values to make the query in the results page
