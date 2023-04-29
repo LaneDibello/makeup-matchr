@@ -5,6 +5,7 @@ from io import BytesIO
 import numpy as np
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
+from django.template.context_processors import csrf
 from makeupApp.forms import InputForm
 from makeupApp.matches import Match
 from makeupApp.models import Product
