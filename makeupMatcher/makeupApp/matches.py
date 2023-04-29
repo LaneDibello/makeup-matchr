@@ -30,8 +30,23 @@ class Match:
         Products will be priced between `price_l` and `price_h`.
         If `brandName` is specified, then they will only be of that brand.
         """
+        products = None
         if (brandName != ""):
-            return Product.objects.filter(price__range = (price_l, price_h), brand__iexact=brandName).annotate(distance=self.distance).order_by('distance')[:count]
-        return Product.objects.filter(price__range = (price_l, price_h)).annotate(distance=self.distance).order_by('distance')[:count]
+            products = Product.objects.filter(price__range = (price_l, price_h), brand__iexact=brandName).annotate(distance=self.distance).order_by('distance')[:count]
+        else:
+            products = Product.objects.filter(price__range = (price_l, price_h)).annotate(distance=self.distance).order_by('distance')[:count]
+        
+        # fix unicode bug
+        for p in products:
+            try:
+                p.name = p.name.encode("cp1252").decode('utf-8')
+                p.brand = p.brand.encode("cp1252").decode('utf-8')
+                p.vendor = p.vendor.encode("cp1252").decode('utf-8')
+                #p.colorcode = p.colorcode.encode("cp1252").decode('utf-8')
+            except:
+                print("Encoding error encountered with %s" % p.name)
+                continue
+        
+        return products
     
 
