@@ -19,7 +19,6 @@ def index(request):
     This primarily includes Image upload and handling, as well as passing to the color correction method
     '''
     if not request.method == 'POST':
-        print('Was POST')
         return render(request, 'index.html')
 
     img_raw = Image.open(request.FILES['image'])
@@ -54,9 +53,7 @@ def index(request):
     img_buf = BytesIO()
     img.save(img_buf, format="JPEG")
     request.session['image'] = b64encode(img_buf.getvalue()).decode()
-    for key, value in request.session.items(): print (f'{key} => {value}')
-    
-    print('To picker')
+
     return redirect('picker')
 
 def corrected(request):
@@ -77,8 +74,6 @@ def picker(request):
     Obtains the selected image coordinates from the ismap element, and passes the associated color to the page.
     '''
     if not 'image' in request.session: # if there is no image redirect to index page
-        print('No image')
-        for key, value in request.session.items(): print (f'{key} => {value}')
         return redirect('index')
 
     coords_s = request.META['QUERY_STRING']
