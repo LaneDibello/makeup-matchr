@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-njj&55u5wh8$s)k!&r&8-k(70us-a%as!n5k6hs&ubdar*w1kb
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
 
 # ALLOWED_HOSTS = ['matchr.csw2vmcpvfrj.us-east-2.rds.amazonaws.com', '3.143.123.53', '127.0.0.1', 'localhost']
