@@ -77,7 +77,7 @@ def picker(request):
     '''
     if not 'image' in request.session: # if there is no image redirect to index page
         print('No image')
-        print(request.session)
+        for key, value in request.session.items(): print (f'{key} => {value}')
         return redirect('index')
 
     coords_s = request.META['QUERY_STRING']
