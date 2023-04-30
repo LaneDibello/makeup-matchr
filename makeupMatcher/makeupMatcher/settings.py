@@ -16,12 +16,15 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+#os.environ['HTTPS'] = "on"
+#SESSION_COOKIE_SECURE = True
+#CSRF_COOKIE_SECURE = True
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-njj&55u5wh8$s)k!&r&8-k(70us-a%as!n5k6hs&ubdar*w1kb'
+SECRET_KEY = '*VG*RVI*I*B#I#Y@BUiuvf2viviu^f67^vtiv326fvyVI^fuv27g26vd1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -30,7 +33,6 @@ DEBUG = False
 SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
 
-# ALLOWED_HOSTS = ['matchr.csw2vmcpvfrj.us-east-2.rds.amazonaws.com', '3.143.123.53', '127.0.0.1', 'localhost']
 ALLOWED_HOSTS = ['3.140.9.152', '52.15.89.149']
 
 # Application definition
@@ -129,6 +131,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+
 
 
 # Default primary key field type
