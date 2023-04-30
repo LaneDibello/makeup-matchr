@@ -31,7 +31,7 @@ SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
 
 # ALLOWED_HOSTS = ['matchr.csw2vmcpvfrj.us-east-2.rds.amazonaws.com', '3.143.123.53', '127.0.0.1', 'localhost']
-ALLOWED_HOSTS = ['matchr.csw2vmcpvfrj.us-east-2.rds.amazonaws.com', '3.140.9.152']
+ALLOWED_HOSTS = ['3.140.9.152']
 
 # Application definition
 
