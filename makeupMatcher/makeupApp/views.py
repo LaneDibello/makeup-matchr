@@ -1,16 +1,17 @@
-from django.shortcuts import render, redirect
+import re
+from base64 import b64decode, b64encode
+from io import BytesIO
+
+import numpy as np
+from django.http import HttpResponse
+from django.shortcuts import redirect, render
+from makeupApp.forms import InputForm
+from makeupApp.matches import Match
 from makeupApp.models import Product
 from makeupApp.utils.color_correction import CorrectImage
-from makeupApp.matches import Match
-from makeupApp.forms import InputForm
-from django.http import HttpResponse
-import re, os
-from PIL import Image, ExifTags
-from io import BytesIO
-import numpy as np
-from base64 import b64encode, b64decode
+from PIL import ExifTags, Image
 
-brandChoices = Product.getBrands() # Grab a the list of brands targetted in the database for the filter drop down
+brandChoices = Product.getBrands() # Grab a the list of brands targeted in the database for the filter drop down
 
 def index(request):
     '''
@@ -19,7 +20,7 @@ def index(request):
     '''
     if not request.method == 'POST':
         return render(request, 'index.html')
-    
+
     img_raw = Image.open(request.FILES['image'])
     
     if img_raw.format == "JPEG":
@@ -75,7 +76,6 @@ def picker(request):
     if not 'image' in request.session: # if there is no image redirect to index page
         return redirect('index')
 
-
     coords_s = request.META['QUERY_STRING']
     coords = [0,0]
     if (coords_s != ""): coords = list(map(int, re.findall(r'\d+', coords_s)))[-2:]
@@ -86,17 +86,15 @@ def picker(request):
         init = True
 
     img_b64 = request.session['image']
-    # im = Image.open('../makeupMatcher/' + file_url).load()
+
     im = np.array(Image.open(BytesIO(b64decode(img_b64))))
     color = im[coords[1], coords[0]]
     context = {
-        #'x': coords[0],
-        #'y': coords[1],
         'r': int(color[0]),
         'g': int(color[1]),
         'b': int(color[2]),
         'img_b64' : img_b64,
-        'init' : init,
+        'init' : init
     }
     
     # save the rgb values to make the query in the results page
