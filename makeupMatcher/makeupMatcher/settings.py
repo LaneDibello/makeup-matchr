@@ -17,8 +17,6 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 #os.environ['HTTPS'] = "on"
-#SESSION_COOKIE_SECURE = True
-#CSRF_COOKIE_SECURE = True
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -33,7 +31,7 @@ DEBUG = False
 SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
 
-ALLOWED_HOSTS = ['3.140.9.152', '52.15.89.149']
+ALLOWED_HOSTS = ['www.matchr.makeup']
 
 # Application definition
 
