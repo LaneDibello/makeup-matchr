@@ -1,3 +1,6 @@
+**THIS IS A NON-FUNCTIONAL CLONE OF THE MAKEUP-MATCHR SENIOR DESIGN PROJECT**
+
+
 # Installation Instructions
 For standard users no installation is required as the application is web hosted and accessible via the domain matchr.makup. For administrators that want to get the server up and running they need to follow the following instructions:
 
